@@ -23,6 +23,7 @@ interface CalendarContainerProps {
   onChange?: (date: dayjs.Dayjs) => void;
   /** TodayPanel show or hide */
   showToday?: boolean;
+  todaydate?: any;
 }
 
 interface PrivateProps {
@@ -66,7 +67,7 @@ class CalendarContainer extends React.Component<Props, State> {
     return {
       [IDatePicker.ViewMode.YEAR]: `${year - 4} - ${year + 5}`,
       [IDatePicker.ViewMode.MONTH]: `${year}`,
-      [IDatePicker.ViewMode.DAY]: dayjs(current).format('YYYY.MM'),
+      [IDatePicker.ViewMode.DAY]: dayjs(current).format('MMM  YYYY'),
     }[this.state.viewMode];
   };
 
@@ -81,7 +82,7 @@ class CalendarContainer extends React.Component<Props, State> {
       changedMode = IDatePicker.ViewMode.MONTH;
     }
     this.setState({
-      viewMode: showMonthCnt > 1 ? IDatePicker.ViewMode.DAY : changedMode,
+      viewMode: showMonthCnt > 2 ? IDatePicker.ViewMode.DAY : changedMode,
     });
   };
 
@@ -160,15 +161,15 @@ class CalendarContainer extends React.Component<Props, State> {
       endDay,
       onMouseOver,
       current,
+      todaydate,
       locale = DatePickerDefaults.locale,
     } = this.props;
-
     return (
       <CalendarBody
         viewMode={this.state.viewMode}
         current={current}
         selected={selected}
-        startDay={startDay}
+        startDay={startDay || todaydate}
         endDay={endDay}
         disableDay={disableDay}
         onClick={this.handleChange}
@@ -182,6 +183,7 @@ class CalendarContainer extends React.Component<Props, State> {
 
   public render() {
     const { show, showToday } = this.props;
+    // console.log('today today today...', todaydata)
     const calendarClass = classNames('calendar__container', {
       'calendar--show': show,
     });

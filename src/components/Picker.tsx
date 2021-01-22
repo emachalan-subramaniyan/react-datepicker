@@ -3,6 +3,12 @@ import * as CX from 'classnames';
 import { IDatePicker } from '../common/@types';
 import { getDivPosition, getDomHeight } from '../utils/DOMUtil';
 import Backdrop from './Backdrop';
+import SVGIcon from './SVGIcon';
+
+export enum TabValue {
+  DATE,
+  TIME,
+}
 
 export interface PickerAction {
   show: () => void;
@@ -26,15 +32,18 @@ export interface Props {
   className?: string;
   renderTrigger: (props: PickerRenderProps) => JSX.Element;
   renderContents: (props: PickerRenderProps) => JSX.Element;
+  onTabPress?: any;
 }
 
 export interface State {
   show: boolean;
+  tabValue: TabValue;
   position: IDatePicker.Position;
 }
 class Picker extends React.Component<Props & PickerProps, State> {
   public state = {
     show: false,
+    tabValue: TabValue.DATE,
     position: {
       left: '',
       top: '',
@@ -83,6 +92,38 @@ class Picker extends React.Component<Props & PickerProps, State> {
     });
   };
 
+  public handleTab = (val: TabValue) => () => {
+    this.setState({
+      ...this.state,
+      tabValue: val,
+    });
+    this.props.onTabPress(val);
+    this.showContents
+  };
+
+  public renderTabMenu = (): JSX.Element | null => {
+    const { tabValue } = this.state;
+
+    const renderButton = (type: TabValue, label: string, icon: string) => (
+      <button
+        className={CX({
+          active: tabValue === type,
+        })}
+        onClick={this.handleTab(type)}
+        type="button"
+      >
+        <SVGIcon id={icon} />
+        {/* {label} */}
+      </button>
+    );
+    return (
+      <div className="picker__container__tab">
+        {/* {renderButton(TabValue.DATE, 'DATE', 'calendar')}
+        {renderButton(TabValue.TIME, 'TIME', 'time')} */}
+      </div>
+    );
+  };
+
   public render() {
     const { portal, className, renderTrigger, renderContents } = this.props;
     const { show, position } = this.state;
@@ -93,6 +134,9 @@ class Picker extends React.Component<Props & PickerProps, State> {
 
     return (
       <div className="picker">
+        <div onClick={this.showContents}>
+          {this.renderTabMenu()}
+        </div>          
         <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
           {renderTrigger({ actions })}
         </div>

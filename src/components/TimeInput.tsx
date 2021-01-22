@@ -7,11 +7,11 @@ export interface Props {
   /** TimeInput onDown event */
   onDown: () => void;
   /** TimeInput onChange event */
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
   /** TimeInput onBlur event */
   onBlur: (e: React.FormEvent<HTMLInputElement>) => void;
   /** TimeInput value */
-  value: number;
+  value: number | string;
 }
 
 const TimeInput: React.FunctionComponent<Props> = ({ onUp, onDown, onChange, onBlur, value }) => {

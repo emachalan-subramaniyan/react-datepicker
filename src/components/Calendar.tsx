@@ -6,6 +6,14 @@ import CalendarContainer, { InheritProps as ContainerProps } from './CalendarCon
 export interface Props extends ContainerProps {
   /** Calendar Initial Date Parameters */
   base: dayjs.Dayjs;
+  todayDate?: any;
+  ontodayClick?: any;
+  onyesterdayClick?: any;
+  oncurweekClick?: any;
+  onpastweekClick?: any;
+  oncurrentmthClick?: any;
+  onpastmthClick?: any;
+  onpastClick?: any;
   /** Number of months to show at once */
   showMonthCnt: number;
 }
@@ -33,14 +41,15 @@ class Calendar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { showMonthCnt } = this.props;
+    const { showMonthCnt, todayDate } = this.props;
     const { base } = this.state;
-
     return (
       <div className="calendar">
         <div className="calendar__list">
           {range(showMonthCnt).map(idx => (
             <div className="calendar__item" key={idx}>
+              {idx == 0 && <div className="header-text">Start Date</div> }
+              {idx == 1 && <div className="header-text">End Date</div> }
               <CalendarContainer
                 {...this.props}
                 base={this.state.base}
@@ -48,9 +57,25 @@ class Calendar extends React.Component<Props, State> {
                 prevIcon={idx === 0}
                 nextIcon={idx === showMonthCnt! - 1}
                 setBase={this.setBase}
+                todaydate={todayDate}
               />
             </div>
           ))}
+            <div className="calendar__list calendar-week">
+              <div className="calendar__item">
+                <div className="calendar__body">
+                  <div className="custom-style">
+                    <p className="additional-text" onClick={this.props.ontodayClick}>Today</p>
+                    <p className="additional-text" onClick={this.props.onyesterdayClick}>Yesterday</p>
+                    <p className="additional-text" onClick={this.props.oncurweekClick}>This Week</p>
+                    <p className="additional-text" onClick={this.props.onpastweekClick}>Last Week</p>
+                    <p className="additional-text" onClick={this.props.onpastClick}>Last 7 Days</p>
+                    <p className="additional-text" onClick={this.props.oncurrentmthClick}>This Month</p>
+                    <p className="additional-text" onClick={this.props.onpastmthClick}>Last Month</p>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     );

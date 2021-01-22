@@ -11,9 +11,9 @@ export enum FieldType {
 
 interface RangePickerInputProps {
   /** start input value */
-  startValue?: string;
+  startValue?: any;
   /** end input value */
-  endValue?: string;
+  endValue?: any;
   /** RangePickerInput change event field type is start or end */
   onChange?: (fieldType: FieldType, value: string) => void;
   /** RangePickerInput Blur event field type is start or end */
@@ -22,6 +22,8 @@ interface RangePickerInputProps {
   onClick?: (fieldTyp: FieldType) => void;
   /** RangePickerInput clear event */
   onClear?: (fieldType: FieldType) => void;
+
+  ontimeClick?: any;
 }
 
 export type InputProps = Merge<
@@ -73,13 +75,22 @@ class RangePickerInput extends React.Component<Props> {
   };
 
   public render() {
+    const {ontimeClick} = this.props;
     return (
-      <div className="range-picker-input">
+      <div className="range-picker-input custom-tab">
         <span className="range-picker-input__start">{this.renderStartInput()}</span>
+        <div className="custom-icon">
+          <span onClick={() => ontimeClick('date')}><SVGIcon id="calendar" /></span>
+          <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>
+        </div>
         <span className="range-picker-input__icon">
 	        <SVGIcon id="right-arrow"/>
         </span>
         <span className="range-picker-input__end">{this.renderEndInput()}</span>
+        <div className="custom-icon">
+          <span onClick={() => ontimeClick('date')}><SVGIcon id="calendar" /></span>
+          <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>
+        </div>
       </div>
     );
   }

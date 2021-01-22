@@ -7,7 +7,7 @@ import LayoutDecorator from './decorator/LayoutDecorator';
 
 storiesOf('RangeDatePicker', module)
   .addDecorator(LayoutDecorator)
-  .add('default', () => <RangeDatePicker />)
+  .add('default', () => <RangeDatePicker  includeTime/>)
   .add('initial Start & End Date', () => {
     return (
       <RangeDatePicker initialStartDate={dayjs().subtract(7, 'day')} initialEndDate={dayjs()} />

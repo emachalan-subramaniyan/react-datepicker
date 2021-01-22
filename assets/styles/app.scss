@@ -111,6 +111,7 @@
 .time__container {
   display: inline-flex;
   align-items: center;
+  flex-direction: column;
   border: 1px solid $divider-color;
   padding: 15px;
   background: white;
@@ -265,8 +266,8 @@
       cursor: pointer;
     }
     cursor:pointer;
-    &--0 { color:red; }
-    &--6 { color:blue; }
+    &--0 { color:#909090; }
+    &--6 { color:#909090; }
     &--today{ background: $today-bg-color; }
     &--disabled { color: #ddd; cursor: initial}
     &--start, &--end, &--selected {

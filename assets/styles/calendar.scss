@@ -1,3 +1,73 @@
 @import "_variable.scss";
 @import "_mixin.scss";
 @import "app.scss";
+
+.calendar-week {
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.custom-icon {
+    margin-right: 10px;
+}
+
+.custom-tab {
+    display: flex;
+    align-items: center;
+    width: 500px;
+}
+
+.custom-style {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.header-text {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.time-style {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.ed-time{
+    margin-top: 20px;
+}
+.container_flx{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.time-container {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.additional-text {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    font-weight: lighter;
+    font-family: 'Lato';
+}
+
+.custom-header {
+    background-color: white;
+    border-style: solid;
+    border-width: 1.5px;
+}
+
+.head-textstyle {
+    color: black;
+}

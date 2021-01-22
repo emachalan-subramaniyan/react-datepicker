@@ -29,7 +29,7 @@ const CalendarHead: React.FunctionComponent<Props> = ({
   onTitleClick,
 }) => {
   return (
-    <div className="calendar__head">
+    <div className="calendar__head custom-header">
       <div className="calendar__head--prev">
         {prevIcon && (
           <button onClick={onPrev} className="calendar__head--button" type="button">
@@ -37,7 +37,7 @@ const CalendarHead: React.FunctionComponent<Props> = ({
           </button>
         )}
       </div>
-      <h2 className="calendar__head--title" onClick={onTitleClick}>
+      <h2 className="calendar__head--title head-textstyle" onClick={onTitleClick}>
         {title}
       </h2>
       <div className="calendar__head--next">
