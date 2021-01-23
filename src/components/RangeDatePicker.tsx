@@ -52,6 +52,9 @@ export interface State {
   mode?: FieldType;
   inputValue: string;
   currendate: any;
+  clicked: boolean;
+  isAllowedDays: boolean;
+  isAllowedTime: boolean;
 }
 
 type CalendarProps = Merge<
@@ -91,9 +94,12 @@ class RangeDatePicker extends React.Component<Props, State> {
       start,
       date,
       selected,
+      clicked: false,
       end,
-      startTime: new Date().toTimeString().slice(0, 5),
-      endTime: new Date().toTimeString().slice(0, 5),
+      startTime: " ",
+      endTime: " ",
+      isAllowedDays: false,
+      isAllowedTime: false,
       inputValue: formatDate(date, this.getDateFormat()),
       tabValue: TabValue.DATE,
       startValue: formatDate(start, dateFormat),
@@ -310,7 +316,7 @@ class RangeDatePicker extends React.Component<Props, State> {
     const date = this.state.date || dayjs();
     
     return (
-      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} />
+      <TimeContainer hour={date.hour()} minute={date.minute()} allowedTime={this.state.isAllowedTime} onChange={this.handleTimeChange} />
       );
     };
     
@@ -432,11 +438,19 @@ class RangeDatePicker extends React.Component<Props, State> {
     });
   }
 
+  public onallowedTimeClick = () => {
+    this.setState({ isAllowedTime: !this.state.isAllowedTime})
+  }
+
+  public onallowedDaysClick = () => {
+    this.setState({ isAllowedDays: !this.state.isAllowedDays})
+  }
+
   public renderCalendar = (actions: PickerAction): JSX.Element | null => {
     const { showMonthCnt, initialDate, wrapper } = this.props;
     const { start, end } = this.state;
     let component: JSX.Element;
-
+    
     const calendar = (
       <Calendar
         {...this.props}
@@ -456,6 +470,8 @@ class RangeDatePicker extends React.Component<Props, State> {
         oncurrentmthClick={this.currentMthClick}
         onpastmthClick={this.pastMthClick}
         onpastClick={this.pastClick}
+        allowedTime={this.state.isAllowedTime}
+        allowedDays={this.state.isAllowedDays}
       />
     );
 
@@ -476,6 +492,10 @@ class RangeDatePicker extends React.Component<Props, State> {
         direction={direction}
         readOnly={readOnly}
         disabled={disabled}
+        allowedTime={this.state.isAllowedTime}
+        allowedDays={this.state.isAllowedDays}
+        onallowedTime={this.onallowedTimeClick}
+        onallowedDays={this.onallowedDaysClick}
         onTabPress={(data: any) => this.setState({...this.state,tabValue: data})}
         className={CX({ include__time: includeTime })}
         renderTrigger={() => this.renderRangePickerInput()}

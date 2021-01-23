@@ -7,6 +7,7 @@ interface Props {
   hour?: number;
   /** minute to display */
   minute?: number;
+  allowedTime?: boolean;
   /** hour, minute, type change event */
   onChange?: (hour: number, minute: number) => void;
   /** hour, minute blur event */
@@ -20,10 +21,12 @@ interface State {
   endminute: number;
   startsessions: string;
   endsessions: string;
+  allowedTime?: boolean;
 }
 
 class TimeContainer extends React.Component<Props, State> {
   public state = {
+    allowedTime: this.props.allowedTime,
     starthour: new Date().getHours() % 12 || 12,
     startminute: this.props.minute || 0,
     startsessions: new Date().getHours() >= 12 ? 'PM' : 'AM',
@@ -58,10 +61,15 @@ class TimeContainer extends React.Component<Props, State> {
     );
   };
 
-  public handleUp = (item: string) => () => {
-    const max = item === 'starthour' || item === 'endhour' ? 12 : 59;
+  public handleUp = (item: string, data: string) => () => {
+    let maxd = 12;
+    if(this.props.allowedTime === true && this.state.startsessions == "PM" && data === "startsessions"){
+      maxd = 4;
+    }else if(this.props.allowedTime === true && this.state.endsessions == "PM" && data === "endsessions"){
+      maxd = 4;
+    }
+    const max = item === 'starthour' || item === 'endhour' ? maxd : 59;
     const value = this.state[item];
-
     this.setState(
       {
         ...this.state,
@@ -71,8 +79,13 @@ class TimeContainer extends React.Component<Props, State> {
     );
   };
 
-  public handleDown = (item: string) => () => {
-    const min = 0;
+  public handleDown = (item: string, data: string) => () => {
+    let min = 0;
+    if( this.props.allowedTime === true && this.state.startsessions == "AM" && data === "startsessions"){
+      min = 8;
+    }else if(this.props.allowedTime === true && this.state.endsessions == "AM" && data === "endsessions"){
+      min = 8;
+    }
     const value = this.state[item];
     this.setState(
       {
@@ -104,7 +117,6 @@ class TimeContainer extends React.Component<Props, State> {
     const { starthour, startminute, startsessions, endhour, endminute, endsessions } = this.state;
     let starttime = `${starthour}:${startminute} ${startsessions}`;
     let endtime = `${endhour}:${endminute} ${endsessions}`;
-    console.log('start time', starttime, endtime);
     ifExistCall(onChange, starttime, endtime);
   };
 
@@ -123,8 +135,8 @@ class TimeContainer extends React.Component<Props, State> {
               <div>Hours</div>
               <div className="ed-time">
                 <TimeInput
-                  onUp={this.handleUp('starthour')}
-                  onDown={this.handleDown('starthour')}
+                  onUp={this.handleUp('starthour', "startsessions")}
+                  onDown={this.handleDown('starthour', "startsessions")}
                   onChange={this.handleChange('starthour')}
                   onBlur={this.handleBlur}
                   value={starthour}
@@ -136,8 +148,8 @@ class TimeContainer extends React.Component<Props, State> {
               <div>Minutes</div>
               <div className="ed-time">
                 <TimeInput
-                  onUp={this.handleUp('startminute')}
-                  onDown={this.handleDown('startminute')}
+                  onUp={this.handleUp('startminute', "startsessions")}
+                  onDown={this.handleDown('startminute', "startsessions")}
                   onChange={this.handleChange('startminute')}
                   onBlur={this.handleBlur}
                   value={startminute}
@@ -169,8 +181,8 @@ class TimeContainer extends React.Component<Props, State> {
               <div>Hours</div>
               <div className="ed-time">
                 <TimeInput
-                  onUp={this.handleUp('endhour')}
-                  onDown={this.handleDown('endhour')}
+                  onUp={this.handleUp('endhour', "endsessions")}
+                  onDown={this.handleDown('endhour', "endsessions")}
                   onChange={this.handleChange('endhour')}
                   onBlur={this.handleBlur}
                   value={endhour}
@@ -182,8 +194,8 @@ class TimeContainer extends React.Component<Props, State> {
               <div>Minutes</div>
               <div className="ed-time">
                 <TimeInput
-                  onUp={this.handleUp('endminute')}
-                  onDown={this.handleDown('endminute')}
+                  onUp={this.handleUp('endminute', "endsessions")}
+                  onDown={this.handleDown('endminute', "endsessions")}
                   onChange={this.handleChange('endminute')}
                   onBlur={this.handleBlur}
                   value={endminute}

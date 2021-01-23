@@ -5,10 +5,11 @@ interface Props {
   matrix: string[][];
   headers?: string[];
   className?: string;
+  allowedDays?: boolean;
   cell: (value: string, key: number) => JSX.Element;
 }
 
-const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, cell, headers }) => {
+const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, cell, headers, allowedDays }) => {
   return (
     <table className={classNames('calendar__body--table', className)}>
       {headers && (
@@ -22,6 +23,8 @@ const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, ce
       )}
       <tbody>
         {matrix.map((row, i) => (
+          allowedDays &&(row.shift(),
+          row.pop()),
           <tr key={i}>{row.map((v, j) => cell(v, i * matrix[i].length + j))}</tr>
         ))}
       </tbody>

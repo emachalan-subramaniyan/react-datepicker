@@ -17,6 +17,8 @@ export interface Props {
   startDay?: dayjs.Dayjs;
   /** End day to show in calendar */
   endDay?: dayjs.Dayjs;
+  allowedTime?: boolean;
+  allowedDays?: boolean;
   /** Calendar day click Event */
   onClick?: (date: string) => void;
   /** Calendar day Mouseover Event */
@@ -107,15 +109,15 @@ class DayView extends React.Component<Props & PrivateProps> {
   };
 
   public render() {
-    const { current, locale } = this.props;
-
+    const { current, locale, allowedDays} = this.props;
     const dayMatrix = getDayMatrix(dayjs(current).year(), dayjs(current).month());
     const weekdays = getWeekDays(locale);
-
+    allowedDays ? (weekdays.shift(), weekdays.pop()) : weekdays;
     return (
       <TableMatrixView
         headers={weekdays}
         matrix={dayMatrix}
+        allowedDays={allowedDays}
         cell={(date, key) => (
           <TableCell
             className={this.getDayClass(date)}

@@ -12,6 +12,8 @@ interface CalendarBodyProps {
   viewMode: IDatePicker.ViewMode;
   /** Calendar current Date */
   current: dayjs.Dayjs;
+  allowedTime?: boolean;
+  allowedDays?: boolean;
   /** DayClick Event */
   onClick: (value: string) => void;
   /** Locale to use */

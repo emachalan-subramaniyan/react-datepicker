@@ -168,7 +168,7 @@
   }
 
   &__container {
-    width: 270px;
+    max-width: 270px;
     font-family: 'Roboto', sans-serif;
     display:none;
   }
@@ -206,7 +206,7 @@
       background: none;
       font-size: 20px;
       svg {
-        fill: white;
+        fill: black;
       }
     }
     &--prev, &--next {

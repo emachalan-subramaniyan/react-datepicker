@@ -60,7 +60,7 @@ class RangePickerInput extends React.Component<Props> {
     const { readOnly, disabled, clear } = this.props;
     return (
       <PickerInput
-        value={value}
+        value={ value ? value : ''}
         readOnly={readOnly}
         disabled={disabled}
         clear={clear}

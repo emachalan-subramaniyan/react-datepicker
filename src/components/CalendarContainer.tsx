@@ -23,6 +23,8 @@ interface CalendarContainerProps {
   onChange?: (date: dayjs.Dayjs) => void;
   /** TodayPanel show or hide */
   showToday?: boolean;
+  allowedTime?: boolean;
+  allowedDays?: boolean;
   todaydate?: any;
 }
 
@@ -161,7 +163,7 @@ class CalendarContainer extends React.Component<Props, State> {
       endDay,
       onMouseOver,
       current,
-      todaydate,
+      todaydate, allowedTime, allowedDays,
       locale = DatePickerDefaults.locale,
     } = this.props;
     return (
@@ -177,13 +179,14 @@ class CalendarContainer extends React.Component<Props, State> {
         customDayClass={customDayClass}
         customDayText={customDayText}
         locale={locale}
+        allowedTime={allowedTime}
+        allowedDays={allowedDays}
       />
     );
   };
 
   public render() {
     const { show, showToday } = this.props;
-    // console.log('today today today...', todaydata)
     const calendarClass = classNames('calendar__container', {
       'calendar--show': show,
     });

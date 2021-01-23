@@ -16,6 +16,8 @@ export interface Props extends ContainerProps {
   onpastClick?: any;
   /** Number of months to show at once */
   showMonthCnt: number;
+  allowedTime?: boolean;
+  allowedDays?: boolean;
 }
 
 export interface State {
@@ -41,7 +43,7 @@ class Calendar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { showMonthCnt, todayDate } = this.props;
+    const { showMonthCnt, todayDate,  allowedTime, allowedDays } = this.props;
     const { base } = this.state;
     return (
       <div className="calendar">
@@ -58,6 +60,8 @@ class Calendar extends React.Component<Props, State> {
                 nextIcon={idx === showMonthCnt! - 1}
                 setBase={this.setBase}
                 todaydate={todayDate}
+                allowedTime={allowedTime}
+                allowedDays={allowedDays}
               />
             </div>
           ))}

@@ -30,6 +30,10 @@ export interface Props {
   readOnly?: boolean;
   disabled?: boolean;
   className?: string;
+  onallowedDays?: any;
+  allowedTime?: boolean;
+  allowedDays?: boolean;
+  onallowedTime?: any;
   renderTrigger: (props: PickerRenderProps) => JSX.Element;
   renderContents: (props: PickerRenderProps) => JSX.Element;
   onTabPress?: any;
@@ -125,7 +129,7 @@ class Picker extends React.Component<Props & PickerProps, State> {
   };
 
   public render() {
-    const { portal, className, renderTrigger, renderContents } = this.props;
+    const { portal, className, renderTrigger, renderContents, allowedTime, allowedDays } = this.props;
     const { show, position } = this.state;
     const actions = {
       show: this.showContents,
@@ -133,25 +137,48 @@ class Picker extends React.Component<Props & PickerProps, State> {
     };
 
     return (
-      <div className="picker">
-        <div onClick={this.showContents}>
-          {this.renderTabMenu()}
-        </div>          
-        <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
-          {renderTrigger({ actions })}
-        </div>
-        {show && (
-          <div
-            className={CX('picker__container', { portal, className })}
-            role="dialog"
-            aria-modal="true"
-            style={position}
-            ref={this.contentsRef}
-          >
-            {renderContents({ actions })}
+      <div>
+        <div>
+          <label>Custom Options</label>
+          <div>
+            <label>
+              <input type="checkbox"
+                checked={allowedDays}
+                onChange={() => this.props.onallowedDays()}
+              />
+              Allowed Days (ex: M-F)
+            </label>
           </div>
-        )}
-        <Backdrop show={show} invert={portal} onClick={this.hideContents} />
+          <div>
+            <label>
+              <input type="checkbox"
+                checked={allowedTime}
+                onChange={() => this.props.onallowedTime()}
+              />
+              Allowed Times (ex: 8a-5p)
+            </label>
+          </div>
+        </div>
+        <div className="picker">
+          <div onClick={this.showContents}>
+            {this.renderTabMenu()}
+          </div>          
+          <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
+            {renderTrigger({ actions })}
+          </div>
+          {show && (
+            <div
+              className={CX('picker__container', { portal, className })}
+              role="dialog"
+              aria-modal="true"
+              style={position}
+              ref={this.contentsRef}
+            >
+              {renderContents({ actions })}
+            </div>
+          )}
+          <Backdrop show={show} invert={portal} onClick={this.hideContents} />
+        </div>
       </div>
     );
   }

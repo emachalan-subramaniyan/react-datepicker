@@ -4,7 +4,7 @@ import SVGIcon from './SVGIcon';
 
 export interface Props {
   /** Picker Input value */
-  value?: string;
+  value?: any;
   /** Picker Input Readonly */
   readOnly?: boolean;
   /** Picker Input Disabled */
