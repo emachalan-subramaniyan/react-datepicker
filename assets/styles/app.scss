@@ -16,7 +16,7 @@
 .range-picker-input {
   display: inline-flex;
   border: 1px solid $divider-color;
-  width: 300px;
+  min-width: 250px;
   * {
     box-sizing: border-box;
   }
@@ -160,8 +160,10 @@
 }
 
 .calendar{
-  display:inline-block;
+  display:inline-flex;
+  flex-wrap:wrap;
   background: white;
+  flex-direction: row;
   font-size: $base-font-size;
   *, *:before, *:after {
     box-sizing: border-box;
@@ -169,12 +171,13 @@
 
   &__container {
     max-width: 270px;
+    min-width: 170px;
     font-family: 'Roboto', sans-serif;
     display:none;
   }
 
   &__list {
-    display:table;
+    display: flex;
   }
 
   &__item {

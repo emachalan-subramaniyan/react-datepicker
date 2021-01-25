@@ -14,7 +14,7 @@
 .custom-tab {
     display: flex;
     align-items: center;
-    width: 500px;
+    min-width: 250px;
 }
 
 .custom-style {
@@ -71,3 +71,16 @@
 .head-textstyle {
     color: black;
 }
+
+@media screen and (max-width: 500px) {
+    .calendar{
+    flex-direction:column;
+    }
+    .calendar__list{
+        flex-direction:column;
+        }
+    .calendar__item{
+    width:275px;
+    }
+    
+  }

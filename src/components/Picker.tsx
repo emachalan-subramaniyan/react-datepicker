@@ -102,7 +102,7 @@ class Picker extends React.Component<Props & PickerProps, State> {
       tabValue: val,
     });
     this.props.onTabPress(val);
-    this.showContents
+    this.showContents();
   };
 
   public renderTabMenu = (): JSX.Element | null => {
@@ -160,9 +160,9 @@ class Picker extends React.Component<Props & PickerProps, State> {
           </div>
         </div>
         <div className="picker">
-          <div onClick={this.showContents}>
-            {this.renderTabMenu()}
-          </div>          
+        <div onClick={this.showContents}>
+          {this.renderTabMenu()}
+        </div>          
           <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
             {renderTrigger({ actions })}
           </div>

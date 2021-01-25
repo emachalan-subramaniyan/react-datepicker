@@ -108,11 +108,15 @@ class DayView extends React.Component<Props & PrivateProps> {
     ifExistCall(onMouseOver, dayjs(current).date(parseInt(date, 10)));
   };
 
+  public firstcondition = (data: any) => (data.shift(), data.pop());
+
+  public lastcondition = (data: any) =>  data;
+
   public render() {
     const { current, locale, allowedDays} = this.props;
     const dayMatrix = getDayMatrix(dayjs(current).year(), dayjs(current).month());
     const weekdays = getWeekDays(locale);
-    allowedDays ? (weekdays.shift(), weekdays.pop()) : weekdays;
+    allowedDays  ? this.firstcondition(weekdays) : this.lastcondition(weekdays);
     return (
       <TableMatrixView
         headers={weekdays}

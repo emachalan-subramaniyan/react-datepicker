@@ -6,6 +6,7 @@ import CalendarContainer, { InheritProps as ContainerProps } from './CalendarCon
 export interface Props extends ContainerProps {
   /** Calendar Initial Date Parameters */
   base: dayjs.Dayjs;
+  /** Number of months to show at once */
   todayDate?: any;
   ontodayClick?: any;
   onyesterdayClick?: any;
@@ -14,7 +15,6 @@ export interface Props extends ContainerProps {
   oncurrentmthClick?: any;
   onpastmthClick?: any;
   onpastClick?: any;
-  /** Number of months to show at once */
   showMonthCnt: number;
   allowedTime?: boolean;
   allowedDays?: boolean;
@@ -45,13 +45,14 @@ class Calendar extends React.Component<Props, State> {
   public render() {
     const { showMonthCnt, todayDate,  allowedTime, allowedDays } = this.props;
     const { base } = this.state;
+
     return (
       <div className="calendar">
         <div className="calendar__list">
           {range(showMonthCnt).map(idx => (
             <div className="calendar__item" key={idx}>
-              {idx == 0 && <div className="header-text">Start Date</div> }
-              {idx == 1 && <div className="header-text">End Date</div> }
+               {idx === 0 && <div className="header-text">Start Date</div> }
+                {idx === 1 && <div className="header-text">End Date</div> }
               <CalendarContainer
                 {...this.props}
                 base={this.state.base}
@@ -65,7 +66,7 @@ class Calendar extends React.Component<Props, State> {
               />
             </div>
           ))}
-            <div className="calendar__list calendar-week">
+          <div className="calendar__list calendar-week">
               <div className="calendar__item">
                 <div className="calendar__body">
                   <div className="custom-style">
