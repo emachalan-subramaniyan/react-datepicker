@@ -3,7 +3,7 @@ import * as React from 'react';
 
 interface Props {
   matrix: string[][];
-  headers?: string[];
+  headers?:  any;
   className?: string;
   allowedDays?: boolean;
   cell: (value: string, key: number) => JSX.Element;
@@ -15,7 +15,7 @@ const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, ce
       {headers && (
         <thead>
           <tr>
-            {headers.map((v, i) => (
+            {headers.map((v: string, i: number) => (
               <th key={i}>{v}</th>
             ))}
           </tr>

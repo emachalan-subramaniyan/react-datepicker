@@ -94,7 +94,7 @@ class RangeDatePicker extends React.Component<Props, State> {
       date,
       selected,
       clicked: false,
-      end,
+      end: initialEndDate,
       startTime: " ",
       endTime: " ",
       isAllowedDays: false,
