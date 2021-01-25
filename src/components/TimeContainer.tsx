@@ -63,9 +63,9 @@ class TimeContainer extends React.Component<Props, State> {
 
   public handleUp = (item: string, data: string) => () => {
     let maxd = 12;
-    if(this.props.allowedTime === true && this.state.startsessions == "PM" && data === "startsessions"){
+    if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions"){
       maxd = 4;
-    }else if(this.props.allowedTime === true && this.state.endsessions == "PM" && data === "endsessions"){
+    }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"){
       maxd = 4;
     }
     const max = item === 'starthour' || item === 'endhour' ? maxd : 59;
@@ -81,9 +81,9 @@ class TimeContainer extends React.Component<Props, State> {
 
   public handleDown = (item: string, data: string) => () => {
     let min = 0;
-    if( this.props.allowedTime === true && this.state.startsessions == "AM" && data === "startsessions"){
+    if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions"){
       min = 8;
-    }else if(this.props.allowedTime === true && this.state.endsessions == "AM" && data === "endsessions"){
+    }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions"){
       min = 8;
     }
     const value = this.state[item];
@@ -100,7 +100,7 @@ class TimeContainer extends React.Component<Props, State> {
     this.setState(
       {
         ...this.state,
-        [data]: item == 'AM' ? 'PM' : 'AM',
+        [data]: item === 'AM' ? 'PM' : 'AM',
       },
       () => this.invokeOnChange()
     );
@@ -115,8 +115,8 @@ class TimeContainer extends React.Component<Props, State> {
   public invokeOnChange = () => {
     const { onChange } = this.props;
     const { starthour, startminute, startsessions, endhour, endminute, endsessions } = this.state;
-    let starttime = `${starthour}:${startminute} ${startsessions}`;
-    let endtime = `${endhour}:${endminute} ${endsessions}`;
+    const starttime = `${starthour}:${startminute} ${startsessions}`;
+    const endtime = `${endhour}:${endminute} ${endsessions}`;
     ifExistCall(onChange, starttime, endtime);
   };
 

@@ -112,7 +112,7 @@ class DayView extends React.Component<Props & PrivateProps> {
     const { current, locale, allowedDays} = this.props;
     const dayMatrix = getDayMatrix(dayjs(current).year(), dayjs(current).month());
     const weekdays = getWeekDays(locale);
-    allowedDays ? (weekdays.shift(), weekdays.pop()) : weekdays;
+    // allowedDays ? (weekdays.shift(), weekdays.pop()) : weekdays;
     return (
       <TableMatrixView
         headers={weekdays}

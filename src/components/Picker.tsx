@@ -102,7 +102,7 @@ class Picker extends React.Component<Props & PickerProps, State> {
       tabValue: val,
     });
     this.props.onTabPress(val);
-    this.showContents
+    this.showContents();
   };
 
   public renderTabMenu = (): JSX.Element | null => {

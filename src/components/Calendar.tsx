@@ -50,8 +50,8 @@ class Calendar extends React.Component<Props, State> {
         <div className="calendar__list">
           {range(showMonthCnt).map(idx => (
             <div className="calendar__item" key={idx}>
-              {idx == 0 && <div className="header-text">Start Date</div> }
-              {idx == 1 && <div className="header-text">End Date</div> }
+              {idx === 0 && <div className="header-text">Start Date</div> }
+              {idx === 1 && <div className="header-text">End Date</div> }
               <CalendarContainer
                 {...this.props}
                 base={this.state.base}
