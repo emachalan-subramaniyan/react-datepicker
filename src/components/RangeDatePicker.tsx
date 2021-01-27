@@ -316,7 +316,7 @@ class RangeDatePicker extends React.Component<Props, State> {
     const date = this.state.date || dayjs();
 
     return (
-      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} />
+      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.state.isAllowedTime} />
       );
     };
     

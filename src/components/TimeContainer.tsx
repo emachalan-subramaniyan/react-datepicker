@@ -67,6 +67,10 @@ class TimeContainer extends React.Component<Props, State> {
       maxd = 4;
     }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"){
       maxd = 4;
+    }else if(this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && this.state.starthour < 8){
+      this.setState({starthour: 8});
+    }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions" && this.state.endhour < 8){
+      this.setState({endhour: 8});
     }
     const max = item === 'starthour' || item === 'endhour' ? maxd : 59;
     const value = this.state[item];
@@ -85,6 +89,10 @@ class TimeContainer extends React.Component<Props, State> {
       min = 8;
     }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions"){
       min = 8;
+    }else if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions" && this.state.starthour > 4){
+      this.setState({starthour: 4});
+    }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions" && this.state.endhour > 4){
+      this.setState({endhour: 4});
     }
     const value = this.state[item];
     this.setState(
