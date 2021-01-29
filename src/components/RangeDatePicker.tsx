@@ -267,31 +267,6 @@ class RangeDatePicker extends React.Component<Props, State> {
     });
   };
 
-  public renderTabMenu = (): JSX.Element | null => {
-    const { tabValue } = this.state;
-
-    const renderButton = (type: TabValue, label: string, icon: string) => (
-      <button
-      className={CX({
-        active: tabValue === type,
-      })}
-      onClick={this.handleTab(type)}
-      type="button"
-      >
-        <SVGIcon id={icon} />
-        {label}
-      </button>
-    );
-    return (
-      <div className="picker__container__tab">
-        {/* {renderButton(TabValue.DATE, 'DATE', 'calendar')}
-        {renderButton(TabValue.TIME, 'TIME', 'time')} */}
-      </div>
-    );
-  };
-
-
-
   public handleInputClear = (fieldType: FieldType) => {
     if (fieldType === FieldType.START) {
       this.setState({
@@ -309,7 +284,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   };
 
   public timeClick = (data: string) => {
-    this.setState({...this.state, tabValue: data ==='date' ? TabValue.DATE : TabValue.TIME});
+    this.setState({...this.state, tabValue: data ==='date' ? TabValue.DATE : TabValue.TIME, show: !this.state.show});
   }
 
   public renderTime = (): JSX.Element | null => {

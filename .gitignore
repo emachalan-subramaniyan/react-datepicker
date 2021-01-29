@@ -13,6 +13,7 @@ coverage/
 bower_components/
 storybook-static/
 demo/
+lib/
 
 ## Files
 result.xml

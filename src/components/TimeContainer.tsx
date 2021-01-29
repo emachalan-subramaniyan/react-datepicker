@@ -63,15 +63,21 @@ class TimeContainer extends React.Component<Props, State> {
 
   public handleUp = (item: string, data: string) => () => {
     let maxd = 12;
-    if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions"){
-      maxd = 4;
-    }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"){
-      maxd = 4;
-    }else if(this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && this.state.starthour < 8){
-      this.setState({starthour: 8});
+    if(this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && this.state.starthour < 8){
+      this.setState({starthour: 8}, () => {this.upChangeFunction(item, maxd);});
     }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions" && this.state.endhour < 8){
-      this.setState({endhour: 8});
+      this.setState({endhour: 8}, () => {this.upChangeFunction(item, maxd);});
+    }else {
+      if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions"){
+        maxd = 4;
+      }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"){
+        maxd = 4;
+      }
     }
+    this.upChangeFunction(item, maxd);
+  };
+
+  public upChangeFunction = (item: string, maxd: number) => {
     const max = item === 'starthour' || item === 'endhour' ? maxd : 59;
     const value = this.state[item];
     this.setState(
@@ -81,28 +87,34 @@ class TimeContainer extends React.Component<Props, State> {
       },
       () => this.invokeOnChange()
     );
-  };
+  }
 
   public handleDown = (item: string, data: string) => () => {
     let min = 0;
-    if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions"){
-      min = 8;
-    }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions"){
-      min = 8;
-    }else if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions" && this.state.starthour > 4){
-      this.setState({starthour: 4});
+    if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions" && this.state.starthour > 4){
+      this.setState({...this.state, starthour: 4},() => {this.downChangeFunction(item, min);});
     }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions" && this.state.endhour > 4){
-      this.setState({endhour: 4});
+      this.setState({endhour: 4},() => {this.downChangeFunction(item, min);});
+    }else {
+      if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions"){
+        min = 8;
+      }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions"){
+        min = 8;
+      }
+      this.downChangeFunction(item, min);
     }
-    const value = this.state[item];
-    this.setState(
-      {
-        ...this.state,
-        [item]: Math.max(value - 1, min),
-      },
-      () => this.invokeOnChange()
-    );
   };
+
+  public downChangeFunction = (item: string, min: number) => {
+    const value = this.state[item];
+      this.setState(
+        {
+          ...this.state,
+          [item]: Math.max(value - 1, min),
+        },
+        () => this.invokeOnChange()
+      );
+  }
 
   public handleSession = (data: string, item: string) => () => {
     this.setState(
@@ -128,6 +140,50 @@ class TimeContainer extends React.Component<Props, State> {
     ifExistCall(onChange, starttime, endtime);
   };
 
+  public onNowPress = (data: string) => {
+    if(data === "startsessions"){
+      this.setState({
+        ...this.state,
+        starthour: new Date().getHours() % 12 || 12,
+        startminute: new Date().getMinutes() || 0,
+        startsessions: new Date().getHours() >= 12 ? 'PM' : 'AM',
+      },
+      () => this.invokeOnChange()
+      );
+    }else {
+      this.setState({
+        ...this.state,
+        endhour: new Date().getHours() % 12 || 12,
+        endminute: new Date().getMinutes() || 0,
+        endsessions: new Date().getHours() >= 12 ? 'PM' : 'AM',
+      },
+      () => this.invokeOnChange()
+      );
+    }
+  }
+
+  public onTimePress = (data: string) => {
+    if(data === "startsessions"){
+      this.setState({
+        ...this.state,
+        starthour: 12,
+        startminute: 0,
+        startsessions: 'AM',
+      },
+      () => this.invokeOnChange()
+      );
+    }else {
+      this.setState({
+        ...this.state,
+        endhour: 12,
+        endminute: 0,
+        endsessions: 'AM',
+      },
+      () => this.invokeOnChange()
+      );
+    }
+  }
+
   public render() {
     const { starthour, startminute, startsessions, endhour, endminute, endsessions } = this.state;
     return (
@@ -135,8 +191,8 @@ class TimeContainer extends React.Component<Props, State> {
         <div className="time__container">
           <div>Start Time</div>
           <div className="container_flx">
-            <div className="time-container">12:00 AM </div>
-            <div className="time-container"> NOW</div>
+            <div className="time-container mouse-over" onClick={() => this.onTimePress("startsessions")}>12:00 AM </div>
+            <div className="time-container mouse-over" onClick={() => this.onNowPress("startsessions")}> NOW</div>
           </div>
           <div className="time-style">
             <div>
@@ -181,8 +237,8 @@ class TimeContainer extends React.Component<Props, State> {
         <div className="time__container">
           <div>End Time</div>
           <div className="container_flx">
-            <div className="time-container">12:00 AM </div>
-            <div className="time-container"> NOW</div>
+            <div className="time-container mouse-over"onClick={() => this.onTimePress("endsessions")}>12:00 AM </div>
+            <div className="time-container mouse-over" onClick={() => this.onNowPress("endsessions")}> NOW</div>
           </div>
           <div className="time-style">
             <div>

@@ -72,6 +72,10 @@
     color: black;
 }
 
+.mouse-over {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 500px) {
     .calendar{
     flex-direction:column;
