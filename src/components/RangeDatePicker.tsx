@@ -284,7 +284,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   };
 
   public timeClick = (data: string) => {
-    this.setState({...this.state, tabValue: data ==='date' ? TabValue.DATE : TabValue.TIME, show: !this.state.show});
+    this.setState({...this.state, tabValue: data ==='date' ? TabValue.DATE : TabValue.TIME});
   }
 
   public renderTime = (): JSX.Element | null => {
