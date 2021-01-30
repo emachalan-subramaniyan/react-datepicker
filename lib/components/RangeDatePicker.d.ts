@@ -11,12 +11,17 @@ export declare enum TabValue {
 interface RangeDatePickerProps {
     /** To display input format (Day.js format) */
     dateFormat: string;
+    allowedTimes?: boolean | undefined;
     /** Initial Calendar base date(if start date not set) */
     initialDate: dayjs.Dayjs;
     /** Initial Start Date */
     initialStartDate?: dayjs.Dayjs;
     showTimeOnly?: boolean;
     includeTime?: boolean;
+    maxPrevMonth?: number | undefined;
+    maxPrevYear?: number | undefined;
+    maxNextMonth?: number | undefined;
+    maxNextYear?: number | undefined;
     /** Initial End Date */
     initialEndDate?: dayjs.Dayjs;
     /** RangeDatePicker change event */
@@ -44,6 +49,7 @@ export interface State {
     currendate: any;
     clicked: boolean;
     isAllowedDays: boolean;
+    isAllowedPrev?: boolean;
     isAllowedTime: boolean;
 }
 declare type CalendarProps = Merge<Omit<ICalendarProps, 'base' | 'onChange' | 'selected'>, {
@@ -83,6 +89,7 @@ declare class RangeDatePicker extends React.Component<Props, State> {
     pastMthClick: () => void;
     pastClick: () => void;
     onallowedTimeClick: () => void;
+    onallowedPrevClick: () => void;
     onallowedDaysClick: () => void;
     renderCalendar: (actions: PickerAction) => JSX.Element | null;
     render(): JSX.Element;

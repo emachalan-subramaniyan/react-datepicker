@@ -15,6 +15,10 @@ export interface Props extends ContainerProps {
     onpastClick?: any;
     showMonthCnt: number;
     allowedTime?: boolean;
+    maxPrevMonth?: number | undefined;
+    maxPrevYear?: number | undefined;
+    maxNextMonth?: number | undefined;
+    maxNextYear?: number | undefined;
     allowedDays?: boolean;
 }
 export interface State {

@@ -18,6 +18,10 @@ interface CalendarContainerProps {
     allowedTime?: boolean;
     allowedDays?: boolean;
     todaydate?: any;
+    maxPrevMonth?: number | undefined;
+    maxPrevYear?: number | undefined;
+    maxNextMonth?: number | undefined;
+    maxNextYear?: number | undefined;
 }
 interface PrivateProps {
     /** CalendarContainer base prop */
@@ -46,7 +50,7 @@ declare class CalendarContainer extends React.Component<Props, State> {
         viewMode: IDatePicker.ViewMode;
     };
     constructor(props: Props);
-    getHeaderTitle: () => string;
+    getHeaderTitle: () => any;
     handleTitleClick: () => void;
     handleChange: (value: string) => void;
     handleBase: (method: string) => () => void;

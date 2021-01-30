@@ -25,8 +25,10 @@ export interface Props {
     allowedTime?: boolean;
     allowedDays?: boolean;
     onallowedTime?: any;
+    allowedPrev?: boolean | undefined;
     renderTrigger: (props: PickerRenderProps) => JSX.Element;
     renderContents: (props: PickerRenderProps) => JSX.Element;
+    onallowedPrev?: any;
     onTabPress?: any;
 }
 export interface State {

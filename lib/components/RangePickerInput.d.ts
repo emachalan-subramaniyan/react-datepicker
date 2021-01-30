@@ -25,6 +25,7 @@ export declare type InputProps = Merge<Omit<IPickerInputProps, 'onBlur' | 'onCle
     startPlaceholder?: string;
     /** end input placeholder */
     endPlaceholder?: string;
+    allowedTimes?: boolean | undefined;
 }>;
 declare type Props = RangePickerInputProps & InputProps;
 declare class RangePickerInput extends React.Component<Props> {
