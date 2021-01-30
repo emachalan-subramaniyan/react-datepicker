@@ -12,9 +12,9 @@ interface Props {
 }
 interface State {
     starthour: number;
-    startminute: number;
+    startminute: number | string;
     endhour: number;
-    endminute: number;
+    endminute: number | string;
     startsessions: string;
     endsessions: string;
     allowedTime?: boolean;

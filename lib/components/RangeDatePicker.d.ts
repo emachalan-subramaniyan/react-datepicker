@@ -11,17 +11,17 @@ export declare enum TabValue {
 interface RangeDatePickerProps {
     /** To display input format (Day.js format) */
     dateFormat: string;
-    allowedTimes?: boolean | undefined;
+    restrictToDayTime?: boolean | undefined;
     /** Initial Calendar base date(if start date not set) */
     initialDate: dayjs.Dayjs;
     /** Initial Start Date */
     initialStartDate?: dayjs.Dayjs;
     showTimeOnly?: boolean;
     includeTime?: boolean;
-    maxPrevMonth?: number | undefined;
-    maxPrevYear?: number | undefined;
-    maxNextMonth?: number | undefined;
-    maxNextYear?: number | undefined;
+    maxPrevMonths?: number | undefined;
+    maxPrevYears?: number | undefined;
+    maxNextMonths?: number | undefined;
+    maxNextYears?: number | undefined;
     /** Initial End Date */
     initialEndDate?: dayjs.Dayjs;
     /** RangeDatePicker change event */

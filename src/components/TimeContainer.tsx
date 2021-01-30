@@ -16,9 +16,9 @@ interface Props {
 
 interface State {
   starthour: number;
-  startminute: number;
+  startminute: number | string;
   endhour: number;
-  endminute: number;
+  endminute: number | string;
   startsessions: string;
   endsessions: string;
   allowedTime?: boolean;
@@ -96,9 +96,9 @@ class TimeContainer extends React.Component<Props, State> {
     }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions" && this.state.endhour > 4){
       this.setState({endhour: 4},() => {this.downChangeFunction(item, min);});
     }else {
-      if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions"){
+      if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && item === 'starthour'){
         min = 8;
-      }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions"){
+      }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions" && item === 'starthour'){
         min = 8;
       }
       this.downChangeFunction(item, min);
@@ -135,8 +135,8 @@ class TimeContainer extends React.Component<Props, State> {
   public invokeOnChange = () => {
     const { onChange } = this.props;
     const { starthour, startminute, startsessions, endhour, endminute, endsessions } = this.state;
-    const starttime = `${starthour}:${startminute} ${startsessions}`;
-    const endtime = `${endhour}:${endminute} ${endsessions}`;
+    const starttime = `${starthour}:${startminute >= 10 ? startminute : 0 + String(startminute)} ${startsessions}`;
+    const endtime = `${endhour}:${endminute >= 10 ? endminute : 0 + String(endminute)} ${endsessions}`;
     ifExistCall(onChange, starttime, endtime);
   };
 

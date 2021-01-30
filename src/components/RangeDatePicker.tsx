@@ -19,17 +19,17 @@ export enum TabValue {
 interface RangeDatePickerProps {
   /** To display input format (Day.js format) */
   dateFormat: string;
-  allowedTimes?: boolean | undefined;
+  restrictToDayTime?: boolean | undefined;
   /** Initial Calendar base date(if start date not set) */
   initialDate: dayjs.Dayjs;
   /** Initial Start Date */
   initialStartDate?: dayjs.Dayjs;
   showTimeOnly?: boolean;
   includeTime?: boolean;
-  maxPrevMonth?: number | undefined;
-  maxPrevYear?: number | undefined;
-  maxNextMonth?: number | undefined;
-  maxNextYear?: number | undefined;
+  maxPrevMonths?: number | undefined;
+  maxPrevYears?: number | undefined;
+  maxNextMonths?: number | undefined;
+  maxNextYears?: number | undefined;
   /** Initial End Date */
   initialEndDate?: dayjs.Dayjs;
   /** RangeDatePicker change event */
@@ -101,8 +101,8 @@ class RangeDatePicker extends React.Component<Props, State> {
       selected,
       clicked: false,
       end: initialEndDate,
-      startTime: " ",
-      endTime: " ",
+      startTime: "",
+      endTime: "",
       isAllowedDays: false,
       isAllowedTime: false,
       isAllowedPrev: false,
@@ -115,7 +115,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   }
 
   public handleTimeChange = (hour: number, minute: number) => {
-    this.setState({...this.state, startTime: hour, endTime: minute});
+    this.setState({...this.state, startTime: ' ' + hour, endTime: ' ' + minute});
     // const { onChange } = this.props;
     // let date = this.state.date;
     // let selected = this.state.selected;
@@ -298,7 +298,7 @@ class RangeDatePicker extends React.Component<Props, State> {
     const date = this.state.date || dayjs();
 
     return (
-      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.props.allowedTimes} />
+      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.props.restrictToDayTime} />
       );
     };
     
@@ -312,8 +312,8 @@ class RangeDatePicker extends React.Component<Props, State> {
         disabled={disabled}
         clear={clear}
         endPlaceholder={endPlaceholder}
-        startValue={`${startValue}` + ' ' +  `${startTime}` }
-        endValue={`${endValue}` + ' ' + `${endTime}`}
+        startValue={`${startValue}` + `${startTime}` }
+        endValue={`${endValue}` + `${endTime}`}
         onChange={this.handleInputChange}
         onBlur={this.handleInputBlur}
         onClear={this.handleInputClear}
@@ -433,7 +433,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   }
 
   public renderCalendar = (actions: PickerAction): JSX.Element | null => {
-    const { showMonthCnt, initialDate, wrapper, allowedDays, allowedTimes, maxPrevMonth, maxPrevYear, maxNextMonth, maxNextYear } = this.props;
+    const { showMonthCnt, initialDate, wrapper, allowedDays, restrictToDayTime, maxPrevMonths, maxPrevYears, maxNextMonths, maxNextYears } = this.props;
     const { start, end } = this.state;
     let component: JSX.Element;
     
@@ -456,12 +456,12 @@ class RangeDatePicker extends React.Component<Props, State> {
         oncurrentmthClick={this.currentMthClick}
         onpastmthClick={this.pastMthClick}
         onpastClick={this.pastClick}
-        allowedTime={allowedTimes}
+        allowedTime={restrictToDayTime}
         allowedDays={allowedDays}
-        maxPrevMonth={maxPrevMonth}
-        maxPrevYear={maxPrevYear}
-        maxNextMonth={maxNextMonth}
-        maxNextYear={maxNextYear}
+        maxPrevMonth={maxPrevMonths}
+        maxPrevYear={maxPrevYears}
+        maxNextMonth={maxNextMonths}
+        maxNextYear={maxNextYears}
 
       />
     );
@@ -476,7 +476,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   };
 
   public render() {
-    const { includeTime, portal, direction, disabled, readOnly, allowedDays, allowedTimes } = this.props;
+    const { includeTime, portal, direction, disabled, readOnly, allowedDays, restrictToDayTime } = this.props;
 
     return (
       <Picker
@@ -484,7 +484,7 @@ class RangeDatePicker extends React.Component<Props, State> {
         direction={direction}
         readOnly={readOnly}
         disabled={disabled}
-        allowedTime={allowedTimes}
+        allowedTime={restrictToDayTime}
         allowedDays={allowedDays}
         allowedPrev={this.state.isAllowedPrev}
         onallowedPrev={this.onallowedPrevClick}
