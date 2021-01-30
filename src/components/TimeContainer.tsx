@@ -37,9 +37,9 @@ class TimeContainer extends React.Component<Props, State> {
 
   public handleChange = (item: string) => (e: React.FormEvent<HTMLInputElement>) => {
     const min = 0;
-    const max = item === 'starthour' || 'endhour' ? 12 : 59;
+    const max = item === 'starthour' || item === 'endhour' ? 12 : 59;
     let value = parseInt(e.currentTarget.value, 10);
-
+    
     if (isNaN(value)) {
       value = 0;
     }

@@ -48,11 +48,11 @@ class CalendarBody extends React.Component<Props> {
   public render() {
     const { current, onClick, locale } = this.props;
     const viewMap = {
-      [IDatePicker.ViewMode.YEAR]: buildMatrixView(
-        getYearMatrix(dayjs(current).year()),
-        YEAR_VIEW_CLASS,
-        (_, v) => () => onClick(v)
-      ),
+      // [IDatePicker.ViewMode.YEAR]: buildMatrixView(
+      //   getYearMatrix(dayjs(current).year()),
+      //   YEAR_VIEW_CLASS,
+      //   (_, v) => () => onClick(v)
+      // ),
       [IDatePicker.ViewMode.MONTH]: buildMatrixView(
         getMonthMatrix(locale),
         MONTH_VIEW_CLASS,

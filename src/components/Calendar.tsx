@@ -17,6 +17,10 @@ export interface Props extends ContainerProps {
   onpastClick?: any;
   showMonthCnt: number;
   allowedTime?: boolean;
+  maxPrevMonth?: number | undefined;
+  maxPrevYear?: number | undefined;
+  maxNextMonth?: number | undefined;
+  maxNextYear?: number | undefined;
   allowedDays?: boolean;
 }
 
@@ -43,7 +47,7 @@ class Calendar extends React.Component<Props, State> {
   };
 
   public render() {
-    const { showMonthCnt, todayDate,  allowedTime, allowedDays } = this.props;
+    const { showMonthCnt, todayDate,  allowedTime, allowedDays, maxPrevMonth,  maxPrevYear, maxNextMonth, maxNextYear } = this.props;
     const { base } = this.state;
 
     return (
@@ -63,6 +67,10 @@ class Calendar extends React.Component<Props, State> {
                 todaydate={todayDate}
                 allowedTime={allowedTime}
                 allowedDays={allowedDays}
+                maxPrevMonth={maxPrevMonth}
+                maxPrevYear={maxPrevYear}
+                maxNextMonth={maxNextMonth}
+                maxNextYear={maxNextYear}
               />
             </div>
           ))}

@@ -26,6 +26,10 @@ interface CalendarContainerProps {
   allowedTime?: boolean;
   allowedDays?: boolean;
   todaydate?: any;
+  maxPrevMonth?: number | undefined;
+  maxPrevYear?: number | undefined;
+  maxNextMonth?: number | undefined;
+  maxNextYear?: number | undefined;
 }
 
 interface PrivateProps {
@@ -67,7 +71,7 @@ class CalendarContainer extends React.Component<Props, State> {
     const { current } = this.props;
     const year = dayjs(current).year();
     return {
-      [IDatePicker.ViewMode.YEAR]: `${year - 4} - ${year + 5}`,
+      // [IDatePicker.ViewMode.YEAR]: `${year - 4} - ${year + 5}`,
       [IDatePicker.ViewMode.MONTH]: `${year}`,
       [IDatePicker.ViewMode.DAY]: dayjs(current).format('MMM  YYYY'),
     }[this.state.viewMode];
@@ -79,7 +83,7 @@ class CalendarContainer extends React.Component<Props, State> {
     let changedMode: IDatePicker.ViewMode = viewMode;
 
     if (viewMode === IDatePicker.ViewMode.MONTH) {
-      changedMode = IDatePicker.ViewMode.YEAR;
+      // changedMode = IDatePicker.ViewMode.YEAR;
     } else if (viewMode === IDatePicker.ViewMode.DAY) {
       changedMode = IDatePicker.ViewMode.MONTH;
     }
@@ -92,7 +96,7 @@ class CalendarContainer extends React.Component<Props, State> {
     const { viewMode } = this.state;
     const { current, onChange, setBase, showMonthCnt, base } = this.props;
     if (!value.trim()) return;
-    if (showMonthCnt > 1) {
+    if (showMonthCnt > 2) {
       const date = dayjs(current)
         .date(parseInt(value, 10))
         .toDate();
@@ -101,10 +105,10 @@ class CalendarContainer extends React.Component<Props, State> {
     }
 
     if (viewMode === IDatePicker.ViewMode.YEAR) {
-      setBase(dayjs(base).year(parseInt(value, 10)));
-      this.setState({
-        viewMode: IDatePicker.ViewMode.MONTH,
-      });
+      // setBase(dayjs(base).year(parseInt(value, 10)));
+      // this.setState({
+      //   viewMode: IDatePicker.ViewMode.MONTH,
+      // });
     } else if (viewMode === IDatePicker.ViewMode.MONTH) {
       setBase(dayjs(base).month(parseInt(value, 10)));
       this.setState({
@@ -117,15 +121,35 @@ class CalendarContainer extends React.Component<Props, State> {
   };
 
   public handleBase = (method: string) => () => {
-    const { base, setBase } = this.props;
+    const d = new Date();
+    const yd = new Date();
+    let spedate = null;
+    let speyear = null;
+    const { base, setBase, maxPrevMonth,  maxPrevYear, maxNextMonth, maxNextYear } = this.props;
     const { viewMode } = this.state;
     const date = dayjs(base);
     if (viewMode === IDatePicker.ViewMode.YEAR) {
-      setBase(date[method](10, 'year'));
+      // setBase(date[method](10, 'year'));
     } else if (viewMode === IDatePicker.ViewMode.MONTH) {
-      setBase(date[method](1, 'year'));
+      if(method === 'subtract' && maxPrevYear){
+        yd.setFullYear(yd.getFullYear() - (maxPrevYear + 1));
+      }else if(maxNextYear){
+       yd.setFullYear(yd.getFullYear() + maxNextYear);
+      }
+      speyear = new Date(yd).toLocaleDateString('en-US', {year: 'numeric'});
+      if(String(date[method](1, 'year').format('YYYY')) !== speyear){
+        setBase(date[method](1, 'year'));
+      }
     } else {
-      setBase(date[method](1, 'month'));
+      if(method === 'subtract' && maxPrevMonth){
+        d.setMonth(d.getMonth() - (maxPrevMonth + 1));
+      }else if(maxNextMonth){
+        d.setMonth(d.getMonth() + maxNextMonth);
+      }
+      spedate = new Date(d).toLocaleDateString('en-US', {month: '2-digit',year: 'numeric'});
+      if(String(date[method](1, 'month').format('MM/YYYY')) !== spedate){
+        setBase(date[method](1, 'month'));
+      }
     }
   };
 

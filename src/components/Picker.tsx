@@ -34,8 +34,10 @@ export interface Props {
   allowedTime?: boolean;
   allowedDays?: boolean;
   onallowedTime?: any;
+  allowedPrev?: boolean | undefined;
   renderTrigger: (props: PickerRenderProps) => JSX.Element;
   renderContents: (props: PickerRenderProps) => JSX.Element;
+  onallowedPrev?: any;
   onTabPress?: any;
 }
 
@@ -106,7 +108,7 @@ class Picker extends React.Component<Props & PickerProps, State> {
   };
 
   public render() {
-    const { portal, className, renderTrigger, renderContents, allowedTime, allowedDays } = this.props;
+    const { portal, className, renderTrigger, renderContents } = this.props;
     const { show, position } = this.state;
     const actions = {
       show: this.showContents,
@@ -114,45 +116,22 @@ class Picker extends React.Component<Props & PickerProps, State> {
     };
 
     return (
-      <div>
-        <div>
-          <label>Custom Options</label>
-          <div>
-            <label>
-              <input type="checkbox"
-                checked={allowedDays}
-                onChange={() => this.props.onallowedDays()}
-              />
-              Allowed Days (ex: M-F)
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox"
-                checked={allowedTime}
-                onChange={() => this.props.onallowedTime()}
-              />
-              Allowed Times (ex: 8a-5p)
-            </label>
-          </div>
+      <div className="picker">         
+        <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
+          {renderTrigger({ actions })}
         </div>
-        <div className="picker">         
-          <div className="picker__trigger" onClick={this.showContents} ref={this.triggerRef}>
-            {renderTrigger({ actions })}
+        {show && (
+          <div
+            className={CX('picker__container', { portal, className })}
+            role="dialog"
+            aria-modal="true"
+            style={position}
+            ref={this.contentsRef}
+          >
+            {renderContents({ actions })}
           </div>
-          {show && (
-            <div
-              className={CX('picker__container', { portal, className })}
-              role="dialog"
-              aria-modal="true"
-              style={position}
-              ref={this.contentsRef}
-            >
-              {renderContents({ actions })}
-            </div>
-          )}
-          <Backdrop show={show} invert={portal} onClick={this.hideContents} />
-        </div>
+        )}
+        <Backdrop show={show} invert={portal} onClick={this.hideContents} />
       </div>
     );
   }

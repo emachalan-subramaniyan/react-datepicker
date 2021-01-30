@@ -19,12 +19,17 @@ export enum TabValue {
 interface RangeDatePickerProps {
   /** To display input format (Day.js format) */
   dateFormat: string;
+  allowedTimes?: boolean | undefined;
   /** Initial Calendar base date(if start date not set) */
   initialDate: dayjs.Dayjs;
   /** Initial Start Date */
   initialStartDate?: dayjs.Dayjs;
   showTimeOnly?: boolean;
   includeTime?: boolean;
+  maxPrevMonth?: number | undefined;
+  maxPrevYear?: number | undefined;
+  maxNextMonth?: number | undefined;
+  maxNextYear?: number | undefined;
   /** Initial End Date */
   initialEndDate?: dayjs.Dayjs;
   /** RangeDatePicker change event */
@@ -53,6 +58,7 @@ export interface State {
   currendate: any;
   clicked: boolean;
   isAllowedDays: boolean;
+  isAllowedPrev?: boolean;
   isAllowedTime: boolean;
 }
 
@@ -99,6 +105,7 @@ class RangeDatePicker extends React.Component<Props, State> {
       endTime: " ",
       isAllowedDays: false,
       isAllowedTime: false,
+      isAllowedPrev: false,
       inputValue: formatDate(date, this.getDateFormat()),
       tabValue: TabValue.DATE,
       startValue: formatDate(start, dateFormat),
@@ -291,12 +298,12 @@ class RangeDatePicker extends React.Component<Props, State> {
     const date = this.state.date || dayjs();
 
     return (
-      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.state.isAllowedTime} />
+      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.props.allowedTimes} />
       );
     };
     
     public renderRangePickerInput = () => {
-      const { startPlaceholder, endPlaceholder, readOnly, disabled, clear, onChange } = this.props;
+      const { startPlaceholder, endPlaceholder, readOnly, disabled, clear, onChange, includeTime } = this.props;
       const { startValue, endValue, startTime, endTime } = this.state;
       return (
         <RangePickerInput
@@ -311,6 +318,7 @@ class RangeDatePicker extends React.Component<Props, State> {
         onBlur={this.handleInputBlur}
         onClear={this.handleInputClear}
         ontimeClick={this.timeClick}
+        allowedTimes={includeTime}
       />
     );
   };
@@ -416,12 +424,16 @@ class RangeDatePicker extends React.Component<Props, State> {
     this.setState({ isAllowedTime: !this.state.isAllowedTime});
   }
 
+  public onallowedPrevClick = () => {
+    this.setState({ isAllowedPrev: !this.state.isAllowedPrev});
+  }
+
   public onallowedDaysClick = () => {
     this.setState({ isAllowedDays: !this.state.isAllowedDays});
   }
 
   public renderCalendar = (actions: PickerAction): JSX.Element | null => {
-    const { showMonthCnt, initialDate, wrapper } = this.props;
+    const { showMonthCnt, initialDate, wrapper, allowedDays, allowedTimes, maxPrevMonth, maxPrevYear, maxNextMonth, maxNextYear } = this.props;
     const { start, end } = this.state;
     let component: JSX.Element;
     
@@ -444,8 +456,13 @@ class RangeDatePicker extends React.Component<Props, State> {
         oncurrentmthClick={this.currentMthClick}
         onpastmthClick={this.pastMthClick}
         onpastClick={this.pastClick}
-        allowedTime={this.state.isAllowedTime}
-        allowedDays={this.state.isAllowedDays}
+        allowedTime={allowedTimes}
+        allowedDays={allowedDays}
+        maxPrevMonth={maxPrevMonth}
+        maxPrevYear={maxPrevYear}
+        maxNextMonth={maxNextMonth}
+        maxNextYear={maxNextYear}
+
       />
     );
 
@@ -459,7 +476,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   };
 
   public render() {
-    const { includeTime, portal, direction, disabled, readOnly } = this.props;
+    const { includeTime, portal, direction, disabled, readOnly, allowedDays, allowedTimes } = this.props;
 
     return (
       <Picker
@@ -467,8 +484,10 @@ class RangeDatePicker extends React.Component<Props, State> {
         direction={direction}
         readOnly={readOnly}
         disabled={disabled}
-        allowedTime={this.state.isAllowedTime}
-        allowedDays={this.state.isAllowedDays}
+        allowedTime={allowedTimes}
+        allowedDays={allowedDays}
+        allowedPrev={this.state.isAllowedPrev}
+        onallowedPrev={this.onallowedPrevClick}
         onallowedTime={this.onallowedTimeClick}
         onallowedDays={this.onallowedDaysClick}
         onTabPress={(data: any) => this.setState({...this.state,tabValue: data})}

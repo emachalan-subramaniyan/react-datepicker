@@ -33,6 +33,7 @@ export type InputProps = Merge<
     startPlaceholder?: string;
     /** end input placeholder */
     endPlaceholder?: string;
+    allowedTimes?: boolean | undefined;
   }
 >;
 
@@ -75,13 +76,13 @@ class RangePickerInput extends React.Component<Props> {
   };
 
   public render() {
-    const {ontimeClick} = this.props;
+    const {ontimeClick, allowedTimes} = this.props;
     return (
       <div className="range-picker-input custom-tab">
         <span className="range-picker-input__start">{this.renderStartInput()}</span>
         <div className="custom-icon">
           <span onClick={() => ontimeClick('date')}><SVGIcon id="calendar" /></span>
-          <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>
+          {allowedTimes && <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>}
         </div>
         <span className="range-picker-input__icon">
 	        <SVGIcon id="right-arrow"/>
@@ -89,7 +90,7 @@ class RangePickerInput extends React.Component<Props> {
         <span className="range-picker-input__end">{this.renderEndInput()}</span>
         <div className="custom-icon">
           <span onClick={() => ontimeClick('date')}><SVGIcon id="calendar" /></span>
-          <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>
+          {allowedTimes && <span onClick={() => ontimeClick('time')}><SVGIcon id="time" /></span>}
         </div>
       </div>
     );
