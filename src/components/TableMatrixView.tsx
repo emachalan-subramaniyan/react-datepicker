@@ -22,11 +22,11 @@ const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, ce
         </thead>
       )}
       <tbody>
-        {matrix.map((row, i) => (
-          allowedDays &&(row.shift(),
-          row.pop()),
-          <tr key={i}>{row.map((v, j) => cell(v, i * matrix[i].length + j))}</tr>
-        ))}
+        {matrix.map((row, i) => {
+          allowedDays ?(row.shift(),
+          row.pop()) : null;
+            return(<tr key={i}>{row.map((v, j) => cell(v, i * matrix[i].length + j))}</tr>)
+        })}
       </tbody>
     </table>
   );
