@@ -10,6 +10,7 @@ interface Props {
 }
 
 const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, cell, headers, allowedDays }) => {
+  let data: any = null;
   return (
     <table className={classNames('calendar__body--table', className)}>
       {headers && (
@@ -23,9 +24,10 @@ const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, ce
       )}
       <tbody>
         {matrix.map((row, i) => {
-          allowedDays ?(row.shift(),
-          row.pop()) : null;
-            return(<tr key={i}>{row.map((v, j) => cell(v, i * matrix[i].length + j))}</tr>)
+            if(allowedDays){
+              data = row.slice(1, -1);
+          }
+              return(<tr key={i}>{data.map((v: any, j: number) => cell(v, i * matrix[i].length + j))}</tr>);
         })}
       </tbody>
     </table>

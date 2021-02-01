@@ -115,7 +115,8 @@ class RangeDatePicker extends React.Component<Props, State> {
   }
 
   public handleTimeChange = (hour: number, minute: number) => {
-    this.setState({...this.state, startTime: ' ' + hour, endTime: ' ' + minute});
+    const emptspace = ' ';
+    this.setState({...this.state, startTime: emptspace + hour, endTime: emptspace + minute});
     // const { onChange } = this.props;
     // let date = this.state.date;
     // let selected = this.state.selected;

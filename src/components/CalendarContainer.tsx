@@ -133,20 +133,22 @@ class CalendarContainer extends React.Component<Props, State> {
     } else if (viewMode === IDatePicker.ViewMode.MONTH) {
       if(method === 'subtract' && maxPrevYear){
         yd.setFullYear(yd.getFullYear() - (maxPrevYear + 1));
+        speyear = new Date(yd).toLocaleDateString('en-US', {year: 'numeric'});
       }else if(maxNextYear){
-       yd.setFullYear(yd.getFullYear() + maxNextYear);
+        yd.setFullYear(yd.getFullYear() + (maxNextYear+1));
+        speyear = new Date(yd).toLocaleDateString('en-US', {year: 'numeric'});
       }
-      speyear = new Date(yd).toLocaleDateString('en-US', {year: 'numeric'});
       if(String(date[method](1, 'year').format('YYYY')) !== speyear){
         setBase(date[method](1, 'year'));
       }
     } else {
       if(method === 'subtract' && maxPrevMonth){
         d.setMonth(d.getMonth() - (maxPrevMonth + 1));
+        spedate = new Date(d).toLocaleDateString('en-US', {month: '2-digit',year: 'numeric'});
       }else if(maxNextMonth){
         d.setMonth(d.getMonth() + maxNextMonth);
+        spedate = new Date(d).toLocaleDateString('en-US', {month: '2-digit',year: 'numeric'});
       }
-      spedate = new Date(d).toLocaleDateString('en-US', {month: '2-digit',year: 'numeric'});
       if(String(date[method](1, 'month').format('MM/YYYY')) !== spedate){
         setBase(date[method](1, 'month'));
       }
