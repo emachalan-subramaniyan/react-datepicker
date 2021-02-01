@@ -15,7 +15,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*.ts"
