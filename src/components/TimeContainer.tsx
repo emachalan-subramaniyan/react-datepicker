@@ -73,8 +73,8 @@ class TimeContainer extends React.Component<Props, State> {
       }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"){
         maxd = 4;
       }
+      this.upChangeFunction(item, maxd);
     }
-    this.upChangeFunction(item, maxd);
   };
 
   public upChangeFunction = (item: string, maxd: number) => {
@@ -98,7 +98,7 @@ class TimeContainer extends React.Component<Props, State> {
     }else {
       if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && item === 'starthour'){
         min = 8;
-      }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions" && item === 'starthour'){
+      }else if(this.props.allowedTime === true && this.state.endsessions === "AM" && data === "endsessions" && item === 'endhour'){
         min = 8;
       }
       this.downChangeFunction(item, min);
