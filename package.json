@@ -22,6 +22,7 @@
     "prepublish": "yarn lint && yarn test",
     "deploy-storybook": "storybook-to-ghpages",
     "test:unit:output": "yarn test --json --outputFile=.jest.test.result.json",
+    "postinstall": "npx tsc",
     "start": "yarn start-storybook -p 6006"
   },
   "lint-staged": {

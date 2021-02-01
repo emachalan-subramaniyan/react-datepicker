@@ -41,7 +41,7 @@ export interface State {
     end?: any;
     hoverDate?: dayjs.Dayjs;
     startValue: string | undefined | null;
-    endValue: string;
+    endValue: string | undefined | null;
     startTime: any;
     endTime: any;
     mode?: FieldType;

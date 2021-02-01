@@ -26,6 +26,8 @@ const TableMatrixView: React.FunctionComponent<Props> = ({ className, matrix, ce
         {matrix.map((row, i) => {
             if(allowedDays){
               data = row.slice(1, -1);
+          }else {
+            data = row;
           }
               return(<tr key={i}>{data.map((v: any, j: number) => cell(v, i * matrix[i].length + j))}</tr>);
         })}

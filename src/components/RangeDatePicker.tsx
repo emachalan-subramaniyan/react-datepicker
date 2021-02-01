@@ -50,7 +50,7 @@ export interface State {
   end?: any;
   hoverDate?: dayjs.Dayjs;
   startValue: string | undefined | null;
-  endValue: string;
+  endValue: string | undefined | null;
   startTime: any;
   endTime: any;
   mode?: FieldType;
@@ -342,30 +342,34 @@ class RangeDatePicker extends React.Component<Props, State> {
     };
 
   public ontodayclick = () => {
+    const curr = new Date();
+    const { allowedDays } = this.props;
     this.setState({
       currendate: new Date(),
-      startValue : new Date().toLocaleDateString('en-CA'),
-      endValue: new Date().toLocaleDateString('en-CA'),
+      startValue : allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
+      endValue: allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
       start: undefined,
       end: undefined
     });
   }
 
   public yesterdayClick = () => {
+    const { allowedDays } = this.props;
     const yesterday = new Date(Date.now() - 864e5);
     this.setState({
-      currendate: yesterday,
-      startValue : yesterday.toLocaleDateString('en-CA'),
-      endValue: yesterday.toLocaleDateString('en-CA'),
+      currendate: allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday,
+      startValue : allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
+      endValue: allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
       start: undefined,
       end: undefined
     });
   }
 
   public currentWeekClick = () => {
-    const curr = new Date;
-    const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()));
-    const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay()+6));
+    const curr = new Date();
+    const { allowedDays } = this.props;
+    const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay() + (allowedDays ? 1 : 0)));
+    const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + (allowedDays ? 5 : 6)));
     this.setState({
       startValue : firstday.toLocaleDateString('en-CA'),
       endValue: lastday.toLocaleDateString('en-CA'),
@@ -375,9 +379,10 @@ class RangeDatePicker extends React.Component<Props, State> {
   }
 
   public pastWeekClick = () => {
-    const curr = new Date;
-    const frdate = new Date(curr.setDate(curr.getDate() - curr.getDay() - 7));
-    const lstday = new Date(frdate.setDate(frdate.getDate() - frdate.getDay()+6));
+    const curr = new Date();
+    const { allowedDays } = this.props;
+    const frdate = new Date(curr.setDate(curr.getDate() - curr.getDay() - (allowedDays ? 6 : 7)));
+    const lstday = new Date(frdate.setDate(frdate.getDate() - frdate.getDay()+(allowedDays ? 5 : 6)));
     this.setState({
       startValue : curr.toLocaleDateString('en-CA'),
       endValue: lstday.toLocaleDateString('en-CA'),
@@ -388,8 +393,13 @@ class RangeDatePicker extends React.Component<Props, State> {
 
   public currentMthClick = () => {
     const date = new Date();
-    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const { allowedDays } = this.props;
+    const fd = new Date(date.getFullYear(), date.getMonth(), 1);
+    const ld = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const firstDay = (allowedDays && fd.getDay() === 0 || fd.getDay() === 6) ?
+      new Date(fd.setDate(fd.getDate() + 1)) : fd ;
+    const lastDay = (allowedDays && ld.getDay() === 0) ? new Date(ld.setDate(ld.getDate() - 2)) :
+      (allowedDays && ld.getDay() === 6) ? new Date(ld.setDate(ld.getDate() - 1)) : ld ;
     this.setState({
       startValue : firstDay.toLocaleDateString('en-CA'),
       endValue: lastDay.toLocaleDateString('en-CA'),
@@ -400,8 +410,13 @@ class RangeDatePicker extends React.Component<Props, State> {
 
   public pastMthClick = () => {
     const date = new Date();
-    const firstDay = new Date(date.getFullYear(), date.getMonth() -1, 1);
-    const lastDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 0);
+    const { allowedDays } = this.props;
+    const fd = new Date(date.getFullYear(), date.getMonth() -1, 1);
+    const ld = new Date(fd.getFullYear(), fd.getMonth() + 1, 0);
+    const firstDay = (allowedDays && fd.getDay() === 0) ? new Date(date.getFullYear(), date.getMonth() -1, 2) :
+      (allowedDays && fd.getDay() === 6) ? new Date(date.getFullYear(), date.getMonth() -1, 3) : fd;
+    const lastDay = (allowedDays && ld.getDay() === 0) ? new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, - 2) :
+      (allowedDays && ld.getDay() === 6) ? new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, - 1): ld;
     this.setState({
       startValue : firstDay.toLocaleDateString('en-CA'),
       endValue: lastDay.toLocaleDateString('en-CA'),
@@ -411,8 +426,13 @@ class RangeDatePicker extends React.Component<Props, State> {
   }
 
   public pastClick = () => {
-    const firstDay = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-    const yesterday = new Date(Date.now() - 864e5);
+    const { allowedDays } = this.props;
+    const fd = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const ld = new Date(Date.now() - 864e5);
+    const firstDay = (allowedDays && fd.getDay() === 0) ? new Date(Date.now() - 6 * 24 * 60 * 60 * 1000) :
+      (allowedDays && fd.getDay() === 6) ? new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) : fd;
+    const yesterday = allowedDays && ld.getDay() === 0 ? new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) :
+      (allowedDays && ld.getDay() === 6) ? new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) : ld;
     this.setState({
       startValue : firstDay.toLocaleDateString('en-CA'),
       endValue: yesterday.toLocaleDateString('en-CA'),
