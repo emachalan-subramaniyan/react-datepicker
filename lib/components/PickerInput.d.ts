@@ -29,7 +29,7 @@ declare class PickerInput extends React.Component<Props> {
     inputRef: React.RefObject<HTMLInputElement>;
     constructor(props: Props);
     componentDidMount(): void;
-    handleClear: (e: React.MouseEvent<Element>) => void;
+    handleClear: (e: React.MouseEvent) => void;
     renderInput: () => JSX.Element;
     renderClear: () => JSX.Element;
     render(): JSX.Element;

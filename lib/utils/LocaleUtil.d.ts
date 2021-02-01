@@ -1,3 +1,4 @@
-export declare const getMonthShort: (locale: any) => any[];
-export declare const getWeekDays: (locale: any) => any[];
-export declare const getToday: (locale: any) => string;
+import { IDatePicker } from '../common/@types';
+export declare const getMonthShort: (locale: IDatePicker.Locale) => any[];
+export declare const getWeekDays: (locale: IDatePicker.Locale) => any[];
+export declare const getToday: (locale: IDatePicker.Locale) => string;
