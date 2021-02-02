@@ -40,6 +40,7 @@ interface RangeDatePickerProps {
   endText: string;
   /** calendar wrapping element */
   wrapper?: (calendar: JSX.Element) => JSX.Element;
+  OnChange?: any;
 }
 
 export interface State {
@@ -114,31 +115,28 @@ class RangeDatePicker extends React.Component<Props, State> {
     };
   }
 
-  public handleTimeChange = (hour: number, minute: number) => {
+  public handleTimeChange = (hour: number, minute: number) => {  
+    const { startValue, endValue } = this.state;
     const emptspace = ' ';
+    this.valueChanged(startValue, endValue, hour, minute);
     this.setState({...this.state, startTime: emptspace + hour, endTime: emptspace + minute});
-    // const { onChange } = this.props;
-    // let date = this.state.date;
-    // let selected = this.state.selected;
-
-    // if (!date) {
-    //   date = dayjs();
-    //   selected = [date];
-    // }
-
-    // date = date.hour(hour).minute(minute);
-    // const inputValue = date.format(this.getDateFormat());
-
-
-    // ifExistCall(onChange, date, inputValue);
-
-    // this.setState({
-    //   ...this.state,
-    //   date,
-    //   selected,
-    //   inputValue,
-    // });
   };
+
+  public valueChanged = (
+      startvalue: string | undefined | null,
+      endvalue: string | undefined | null,
+      starttime: number,
+      endtime: number
+      ) => {
+    const { OnChange } = this.props;
+    const obj = {
+      fromdate: startvalue,
+      fromtime: starttime,
+      todate: endvalue,
+      totime: endtime
+    };
+    OnChange(obj)
+  }
 
   public getDateFormat() {
     const { dateFormat, includeTime, showTimeOnly } = this.props;
@@ -181,7 +179,8 @@ class RangeDatePicker extends React.Component<Props, State> {
     }
 
     ifExistCall(onChange, startDate, endDate);
-
+    const { startTime, endTime } = this.state;
+    this.valueChanged(formatDate(startDate, dateFormat),  formatDate(endDate, dateFormat), startTime, endTime);
     this.setState(
       {
         ...this.state,
@@ -344,6 +343,7 @@ class RangeDatePicker extends React.Component<Props, State> {
   public ontodayclick = () => {
     const curr = new Date();
     const { allowedDays } = this.props;
+    const { startTime, endTime } = this.state;
     this.setState({
       currendate: new Date(),
       startValue : allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
@@ -351,9 +351,14 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: undefined,
       end: undefined
     });
+    this.valueChanged(
+      allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
+      allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public yesterdayClick = () => {
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const yesterday = new Date(Date.now() - 864e5);
     this.setState({
@@ -363,10 +368,15 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: undefined,
       end: undefined
     });
+    this.valueChanged(
+      allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
+      allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public currentWeekClick = () => {
     const curr = new Date();
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay() + (allowedDays ? 1 : 0)));
     const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + (allowedDays ? 5 : 6)));
@@ -376,10 +386,15 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: firstday,
       end: lastday
     });
+    this.valueChanged(
+      firstday.toLocaleDateString('en-CA'),
+      lastday.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public pastWeekClick = () => {
     const curr = new Date();
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const frdate = new Date(curr.setDate(curr.getDate() - curr.getDay() - (allowedDays ? 6 : 7)));
     const lstday = new Date(frdate.setDate(frdate.getDate() - frdate.getDay()+(allowedDays ? 5 : 6)));
@@ -389,10 +404,15 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: curr,
       end: lstday
     });
+    this.valueChanged(
+      curr.toLocaleDateString('en-CA'),
+      lstday.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public currentMthClick = () => {
     const date = new Date();
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const fd = new Date(date.getFullYear(), date.getMonth(), 1);
     const ld = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -406,10 +426,15 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: firstDay,
       end: lastDay
     });
+    this.valueChanged(
+      firstDay.toLocaleDateString('en-CA'),
+      lastDay.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public pastMthClick = () => {
     const date = new Date();
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const fd = new Date(date.getFullYear(), date.getMonth() -1, 1);
     const ld = new Date(fd.getFullYear(), fd.getMonth() + 1, 0);
@@ -423,9 +448,14 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: firstDay,
       end: lastDay
     });
+    this.valueChanged(
+      firstDay.toLocaleDateString('en-CA'),
+      lastDay.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public pastClick = () => {
+    const { startTime, endTime } = this.state;
     const { allowedDays } = this.props;
     const fd = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const ld = new Date(Date.now() - 864e5);
@@ -439,6 +469,10 @@ class RangeDatePicker extends React.Component<Props, State> {
       start: firstDay,
       end: yesterday
     });
+    this.valueChanged(
+      firstDay.toLocaleDateString('en-CA'),
+      yesterday.toLocaleDateString('en-CA'),
+      startTime, endTime);
   }
 
   public onallowedTimeClick = () => {

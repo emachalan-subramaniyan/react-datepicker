@@ -32,6 +32,7 @@ interface RangeDatePickerProps {
     endText: string;
     /** calendar wrapping element */
     wrapper?: (calendar: JSX.Element) => JSX.Element;
+    OnChange?: any;
 }
 export interface State {
     selected: dayjs.Dayjs[];
@@ -68,6 +69,7 @@ declare class RangeDatePicker extends React.Component<Props, State> {
     };
     constructor(props: Props);
     handleTimeChange: (hour: number, minute: number) => void;
+    valueChanged: (startvalue: string | undefined | null, endvalue: string | undefined | null, starttime: number, endtime: number) => void;
     getDateFormat(): string;
     handleDateChange: (actions: PickerAction) => (date: dayjs.Dayjs) => void;
     handleInputChange: (fieldType: FieldType, value: string) => void;
