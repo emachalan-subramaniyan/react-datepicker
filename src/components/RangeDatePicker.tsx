@@ -40,7 +40,7 @@ interface RangeDatePickerProps {
   endText: string;
   /** calendar wrapping element */
   wrapper?: (calendar: JSX.Element) => JSX.Element;
-  OnChange?: any;
+  onPropChange?: any;
 }
 
 export interface State {
@@ -128,14 +128,14 @@ class RangeDatePicker extends React.Component<Props, State> {
       starttime: number,
       endtime: number
       ) => {
-    const { OnChange } = this.props;
+    const { onPropChange } = this.props;
     const obj = {
       fromdate: startvalue,
       fromtime: starttime,
       todate: endvalue,
       totime: endtime
     };
-    OnChange(obj)
+    onPropChange(obj)
   }
 
   public getDateFormat() {

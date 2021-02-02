@@ -32,7 +32,7 @@ interface RangeDatePickerProps {
     endText: string;
     /** calendar wrapping element */
     wrapper?: (calendar: JSX.Element) => JSX.Element;
-    OnChange?: any;
+    onPropChange?: any;
 }
 export interface State {
     selected: dayjs.Dayjs[];
