@@ -9,6 +9,8 @@ interface Props {
     onChange?: (hour: number, minute: number) => void;
     /** hour, minute blur event */
     onBlur?: (hour: number, minute: number) => void;
+    startdate?: any;
+    enddate?: any;
 }
 interface State {
     starthour: number;

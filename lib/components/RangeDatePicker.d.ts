@@ -69,7 +69,7 @@ declare class RangeDatePicker extends React.Component<Props, State> {
     };
     constructor(props: Props);
     handleTimeChange: (hour: number, minute: number) => void;
-    valueChanged: (startvalue: string | undefined | null, endvalue: string | undefined | null, starttime: number, endtime: number) => void;
+    valueChanged: (startvalue: string | undefined | null, endvalue: string | undefined | null, starttime: number | string | null, endtime: number | string | null) => void;
     getDateFormat(): string;
     handleDateChange: (actions: PickerAction) => (date: dayjs.Dayjs) => void;
     handleInputChange: (fieldType: FieldType, value: string) => void;
