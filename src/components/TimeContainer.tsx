@@ -178,8 +178,15 @@ class TimeContainer extends React.Component<Props, State> {
         },
         () => this.invokeOnChange()
       );
-    }
-    else if(data === 'endsessions' && startsessions != 'PM' ){
+    }else if(data === 'endsessions' && startsessions != 'PM' ){
+      this.setState(
+        {
+          ...this.state,
+          [data]: item === 'AM' ? 'PM' : 'AM',
+        },
+        () => this.invokeOnChange()
+      );
+    }else {
       this.setState(
         {
           ...this.state,
