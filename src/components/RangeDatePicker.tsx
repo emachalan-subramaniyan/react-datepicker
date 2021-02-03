@@ -102,8 +102,8 @@ class RangeDatePicker extends React.Component<Props, State> {
       selected,
       clicked: false,
       end: initialEndDate,
-      startTime: "",
-      endTime: "",
+      startTime: null,
+      endTime: null,
       isAllowedDays: false,
       isAllowedTime: false,
       isAllowedPrev: false,
@@ -125,8 +125,8 @@ class RangeDatePicker extends React.Component<Props, State> {
   public valueChanged = (
       startvalue: string | undefined | null,
       endvalue: string | undefined | null,
-      starttime: number,
-      endtime: number
+      starttime: number | string | null,
+      endtime: number | string | null
       ) => {
     const { onPropChange } = this.props;
     const obj = {
@@ -135,7 +135,7 @@ class RangeDatePicker extends React.Component<Props, State> {
       todate: endvalue,
       totime: endtime
     };
-    onPropChange(obj)
+    onPropChange && onPropChange(obj);
   }
 
   public getDateFormat() {
@@ -298,13 +298,15 @@ class RangeDatePicker extends React.Component<Props, State> {
     const date = this.state.date || dayjs();
 
     return (
-      <TimeContainer hour={date.hour()} minute={date.minute()} onChange={this.handleTimeChange} allowedTime={this.props.restrictToDayTime} />
+      <TimeContainer hour={date.hour()} minute={date.minute()} startdate={this.state.startValue} enddate={this.state.endValue} onChange={this.handleTimeChange} allowedTime={this.props.restrictToDayTime} />
       );
     };
     
     public renderRangePickerInput = () => {
       const { startPlaceholder, endPlaceholder, readOnly, disabled, clear, onChange, includeTime } = this.props;
       const { startValue, endValue, startTime, endTime } = this.state;
+      const startdata = startTime != null ? startTime : '';
+      const enddata = endTime != null ? endTime : '';
       return (
         <RangePickerInput
         startPlaceholder={startPlaceholder}
@@ -312,8 +314,8 @@ class RangeDatePicker extends React.Component<Props, State> {
         disabled={disabled}
         clear={clear}
         endPlaceholder={endPlaceholder}
-        startValue={`${startValue}` + `${startTime}` }
-        endValue={`${endValue}` + `${endTime}`}
+        startValue={`${startValue}` + `${startdata}` }
+        endValue={`${endValue}` + `${enddata}`}
         onChange={this.handleInputChange}
         onBlur={this.handleInputBlur}
         onClear={this.handleInputClear}
@@ -343,18 +345,19 @@ class RangeDatePicker extends React.Component<Props, State> {
   public ontodayclick = () => {
     const curr = new Date();
     const { allowedDays } = this.props;
-    const { startTime, endTime } = this.state;
     this.setState({
       currendate: new Date(),
       startValue : allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
       endValue: allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
       start: undefined,
-      end: undefined
+      end: undefined,
+      startTime: null,
+      endTime: null,
     });
     this.valueChanged(
       allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
       allowedDays && (curr.getDay() === 0 || curr.getDay() === 6) ? null : new Date().toLocaleDateString('en-CA'),
-      startTime, endTime);
+      null, null);
   }
 
   public yesterdayClick = () => {
@@ -366,12 +369,14 @@ class RangeDatePicker extends React.Component<Props, State> {
       startValue : allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
       endValue: allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
       start: undefined,
-      end: undefined
+      end: undefined,
+      startTime: null,
+      endTime: null,
     });
     this.valueChanged(
       allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
       allowedDays && (yesterday.getDay() === 0 || yesterday.getDay() === 6) ? ' ' : yesterday.toLocaleDateString('en-CA'),
-      startTime, endTime);
+      null, null);
   }
 
   public currentWeekClick = () => {

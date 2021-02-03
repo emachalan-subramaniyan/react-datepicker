@@ -15,7 +15,7 @@
 
 .range-picker-input {
   display: inline-flex;
-  border: 1px solid $divider-color;
+  border-bottom: 1px solid;
   min-width: 250px;
   * {
     box-sizing: border-box;
@@ -184,7 +184,8 @@
     display: table-cell;
     border: 1px solid lighten($divider-color,3%);
     &:not(:first-child) {
-      border-left: none !important;
+      // border-left: none !important;
+      margin-left: 5px;
     }
   }
 
@@ -195,12 +196,16 @@
   &__head {
     position:relative;
     background: $primary-color;
-    padding: 10px 6px;
+    padding: 3px;
     &--title {
       font-size: $title-font-size;
       color: white;
       text-align: center;
       margin: 4px;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+      font-weight: 400;
+      line-height: 1.66;
+      letter-spacing: 0.03333em;
     }
     &--button{
       outline: none;
@@ -251,36 +256,43 @@
       table-layout:fixed;
       text-align: center;
       border-spacing: none;
-      border-collapse: collapse;
+      padding-left: 10px;
+      padding-right: 10px;
       th {
         height: 30px;
         vertical-align: middle;
-        color: $primary-text-color;
+        color: rgba(0, 0, 0, 0.38);
+        font-size: 0.75rem;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        font-weight: 400;
+        line-height: 1.66;
+        letter-spacing: 0.03333em;
       }
     }
   }
 
   &__day {
-    vertical-align: top;
-    padding-top:5px;
-    height: 40px;
+    height: 45px;
     &:hover:not(&--disabled) {
-      background: $primary-color-light;
+      background: #43a0476b;
+      border-radius: 25px;
       cursor: pointer;
     }
     cursor:pointer;
     &--0 { color:#909090; }
     &--6 { color:#909090; }
-    &--today{ background: $today-bg-color; }
+    &--today{ background: $today-bg-color; border-radius: 25px; }
     &--disabled { color: #ddd; cursor: initial}
     &--start, &--end, &--selected {
-      background: $primary-color;
+      background-color: #43a047;
       color: $primary-color-text;
+      border-radius: 25px;
       &:hover {
         background: $primary-color;
+        border-radius: 25px;
       }
     }
-    &--range { background: lighten($primary-color-light,10%); }
+    &--range { background: #43a0476b; border-radius: 25px; }
     &--text{
       display: block;
       font-size: 10px;

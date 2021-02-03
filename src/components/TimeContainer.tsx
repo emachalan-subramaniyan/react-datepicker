@@ -12,6 +12,8 @@ interface Props {
   onChange?: (hour: number, minute: number) => void;
   /** hour, minute blur event */
   onBlur?: (hour: number, minute: number) => void;
+  startdate?: any;
+  enddate?: any;
 }
 
 interface State {
@@ -27,12 +29,12 @@ interface State {
 class TimeContainer extends React.Component<Props, State> {
   public state = {
     allowedTime: this.props.allowedTime,
-    starthour: new Date().getHours() % 12 || 12,
-    startminute: this.props.minute || 0,
-    startsessions: new Date().getHours() >= 12 ? 'PM' : 'AM',
-    endhour: new Date().getHours() % 12 || 12,
-    endminute: this.props.minute || 0,
-    endsessions: new Date().getHours() >= 12 ? 'PM' : 'AM',
+    starthour: this.props.allowedTime ? 8 : new Date().getHours() % 12 || 12,
+    startminute: this.props.allowedTime ? 0 : this.props.minute || 0,
+    startsessions: this.props.allowedTime ? "AM" : new Date().getHours() >= 12 ? 'PM' : 'AM',
+    endhour: this.props.allowedTime ? 4 : new Date().getHours() % 12 || 12,
+    endminute: this.props.allowedTime ? 59 : this.props.minute || 0,
+    endsessions: this.props.allowedTime ? "PM" : new Date().getHours() >= 12 ? 'PM' : 'AM',
   };
 
   public handleChange = (item: string) => (e: React.FormEvent<HTMLInputElement>) => {
@@ -80,21 +82,54 @@ class TimeContainer extends React.Component<Props, State> {
   public upChangeFunction = (item: string, maxd: number) => {
     const max = item === 'starthour' || item === 'endhour' ? maxd : 59;
     const value = this.state[item];
-    this.setState(
-      {
-        ...this.state,
-        [item]: Math.min(value + 1, max),
-      },
-      () => this.invokeOnChange()
-    );
+    const { startdate, enddate } = this.props;
+    const starting = new Date(startdate);
+    const ending = new Date(enddate);
+    if(+starting === +ending && item === 'starthour'){
+      this.setState(
+        {
+          ...this.state,
+          starthour: Math.min(value + 1, max),
+          endhour:  Math.min(value + 1, max),
+        },
+        () => this.invokeOnChange()
+      );
+    }else if(+starting === +ending && this.state.starthour === this.state.endhour && item === 'startminute'){
+      this.setState(
+        {
+          ...this.state,
+          startminute: Math.min(value + 1, max),
+          endminute:  Math.min(value + 1, max),
+        },
+        () => this.invokeOnChange()
+      );
+    }else{
+      this.setState(
+        {
+          ...this.state,
+          [item]: Math.min(value + 1, max),
+        },
+        () => this.invokeOnChange()
+      );
+    }
   }
 
   public handleDown = (item: string, data: string) => () => {
+    const { startdate, enddate } = this.props;
+    const starting = new Date(startdate);
+    const ending = new Date(enddate);
+    const value = this.state[item];
     let min = 0;
-    if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions" && this.state.starthour > 4){
+    if(item === "endhour" && +starting === +ending && this.state.starthour >= this.state.endhour && this.state.startsessions === this.state.endsessions){
+        // console.log('happen', this.state.starthour, )
+    }else if(item === "endminute" && +starting === +ending && this.state.starthour === this.state.endhour && this.state.startsessions === this.state.endsessions && this.state.startminute >= this.state.endminute){
+        // console.log('happen', this.state.startminute, )
+    }else if(this.props.allowedTime === true && this.state.startsessions === "PM" && data === "startsessions" && this.state.starthour > 4){
       this.setState({...this.state, starthour: 4},() => {this.downChangeFunction(item, min);});
     }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions" && this.state.endhour > 4){
       this.setState({endhour: 4},() => {this.downChangeFunction(item, min);});
+    }else if(this.props.allowedTime === true && this.state.endsessions === "PM" && data === "endsessions"  && item === 'endhour'){
+      this.downChangeFunction(item, min);
     }else {
       if( this.props.allowedTime === true && this.state.startsessions === "AM" && data === "startsessions" && item === 'starthour'){
         min = 8;
@@ -106,24 +141,53 @@ class TimeContainer extends React.Component<Props, State> {
   };
 
   public downChangeFunction = (item: string, min: number) => {
+    const { startdate, enddate } = this.props;
+    const starting = new Date(startdate);
+    const ending = new Date(enddate);
     const value = this.state[item];
+    if(+starting === +ending && item === 'starthour'){
       this.setState(
         {
           ...this.state,
-          [item]: Math.max(value - 1, min),
+          starthour: Math.max(value - 1, min),
+          endhour:  Math.max(value - 1, min),
         },
         () => this.invokeOnChange()
       );
+    }else{
+        this.setState(
+          {
+            ...this.state,
+            [item]: Math.max(value - 1, min),
+          },
+          () => this.invokeOnChange()
+        );
+    }
   }
 
   public handleSession = (data: string, item: string) => () => {
-    this.setState(
-      {
-        ...this.state,
-        [data]: item === 'AM' ? 'PM' : 'AM',
-      },
-      () => this.invokeOnChange()
-    );
+    const {starthour, startminute, startsessions, endhour, endminute, endsessions} = this.state;
+    if(data === 'startsessions' && starthour >= endhour && startminute >= endminute){
+      this.setState(
+        {
+          ...this.state,
+          startsessions: startsessions === 'AM' ? 'PM' : 'AM',
+          endsessions: startsessions === 'AM' ? 'PM' : 'AM',
+          endhour: starthour,
+          endminute: startminute
+        },
+        () => this.invokeOnChange()
+      );
+    }
+    else if(data === 'endsessions' && startsessions != 'PM' ){
+      this.setState(
+        {
+          ...this.state,
+          [data]: item === 'AM' ? 'PM' : 'AM',
+        },
+        () => this.invokeOnChange()
+      );
+    }
   };
 
   public handleBlur = () => {
@@ -185,15 +249,16 @@ class TimeContainer extends React.Component<Props, State> {
   }
 
   public render() {
+    const d = new Date();
     const { starthour, startminute, startsessions, endhour, endminute, endsessions } = this.state;
     return (
       <div className="sample-check">
         <div className="time__container">
           <div>Start Time</div>
-          <div className="container_flx">
+          {(this.props.allowedTime && ((d.getHours() % 12) > 5)) ? null : <div className="container_flx">
             <div className="time-container mouse-over" onClick={() => this.onTimePress("startsessions")}>12:00 AM </div>
             <div className="time-container mouse-over" onClick={() => this.onNowPress("startsessions")}> NOW</div>
-          </div>
+          </div>}
           <div className="time-style">
             <div>
               <div>Hours</div>
@@ -236,10 +301,10 @@ class TimeContainer extends React.Component<Props, State> {
         </div>
         <div className="time__container">
           <div>End Time</div>
-          <div className="container_flx">
+          {(this.props.allowedTime && ((d.getHours() % 12) > 5)) ? null : <div className="container_flx">
             <div className="time-container mouse-over"onClick={() => this.onTimePress("endsessions")}>12:00 AM </div>
             <div className="time-container mouse-over" onClick={() => this.onNowPress("endsessions")}> NOW</div>
-          </div>
+          </div>}
           <div className="time-style">
             <div>
               <div>Hours</div>

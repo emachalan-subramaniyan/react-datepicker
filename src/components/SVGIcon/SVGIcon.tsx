@@ -19,7 +19,7 @@ const SVGIcon: React.FunctionComponent<Props> = props => {
 
   const Icon = iconMap[props.id];
 
-  return <Icon className={`icon-${props.id}`} {...props} />;
+  return <Icon height={24} width={24} className={`icon-${props.id}`} {...props} />;
 };
 
 SVGIcon.defaultProps = {
