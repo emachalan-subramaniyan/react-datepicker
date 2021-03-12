@@ -23,6 +23,7 @@ interface DatePickerProps {
     onChange?: (date: dayjs.Dayjs, rawValue: string) => void;
     /** DatePicker Input default Icon */
     showDefaultIcon: boolean;
+    includeRelativeDate?: boolean;
 }
 export interface State {
     tabValue: TabValue;

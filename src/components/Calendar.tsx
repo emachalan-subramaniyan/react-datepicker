@@ -22,6 +22,7 @@ export interface Props extends ContainerProps {
   maxNextMonth?: number | undefined;
   maxNextYear?: number | undefined;
   allowedDays?: boolean;
+  includeRelativeDate?: boolean;
 }
 
 export interface State {
@@ -74,7 +75,7 @@ class Calendar extends React.Component<Props, State> {
               />
             </div>
           ))}
-          <div className="calendar__list calendar-week">
+         {this.props.includeRelativeDate &&  <div className="calendar__list calendar-week">
               <div className="calendar__item">
                 <div className="calendar__body">
                   <div className="custom-style">
@@ -88,7 +89,7 @@ class Calendar extends React.Component<Props, State> {
                   </div>
                 </div>
               </div>
-            </div>
+          </div> }
         </div>
       </div>
     );

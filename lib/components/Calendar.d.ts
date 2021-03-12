@@ -20,6 +20,7 @@ export interface Props extends ContainerProps {
     maxNextMonth?: number | undefined;
     maxNextYear?: number | undefined;
     allowedDays?: boolean;
+    includeRelativeDate?: boolean;
 }
 export interface State {
     base: dayjs.Dayjs;
